@@ -11,6 +11,7 @@ function counts(now){
   return {due,fresh:fresh.slice(0,NEW_LIMIT),freshAll:fresh.length};
 }
 function renderDash(){
+  setTimeout(()=>Updater.apply(),0);
   const now=Date.now(),{due,fresh}=counts(now);
   const learned=WORDS.filter(w=>S.cards[w.id]&&S.cards[w.id].reps);
   const mature=learned.filter(w=>S.cards[w.id].s>=21).length;
@@ -44,6 +45,7 @@ function renderDash(){
     <p class="hint">忘れかける直前（想起率90%の地点）に出題されるよう、1枚ずつ次回の日付を計算しています。</p>
   </section>
   <button class="btn warn" id="reset" style="align-self:center">学習記録をリセット</button>
+  <p class="hint" style="text-align:center">バージョン ${esc(Updater.version||"—")}</p>
   </div>`;
   document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{S.filter=b.dataset.f;save();renderDash();});
   $("#go").onclick=startSession;

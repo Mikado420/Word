@@ -1,0 +1,11 @@
+{
+  "name": "赤シート単語帳",
+  "short_name": "単語帳",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#E4E8E2",
+  "theme_color": "#1E2633",
+  "lang": "ja",
+  "icons": [{"src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+}

@@ -13,3 +13,4 @@ document.addEventListener("keydown",e=>{
 });
 
 setMode(S.mode||"in");
+Updater.start();

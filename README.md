@@ -18,7 +18,21 @@ js/fsrs.js        復習間隔の計算（FSRS）
 js/utils.js       共通ヘルパー
 js/book.js        インプットモード（単語帳ページ・赤シート・付箋）
 js/review.js      アウトプットモード（ダッシュボード・復習カード）
+js/updater.js     自動更新（version.json の監視）
 js/app.js         モード切替・キー操作・起動
+sw.js             Service Worker（オフライン対応・最新優先）
+manifest.json     ホーム画面に追加するための設定
+version.json      版番号（公開時に自動で書き換え）
 ```
 
 ES Modules を使っていないので、`index.html` をダブルクリックで開いても動きます。
+
+## 自動更新のしくみ
+
+1. `main` にプッシュすると GitHub Actions が `version.json` にコミットIDを書き込んで Pages に公開します。
+2. アプリは起動時・画面に戻ったとき・5分ごとに `version.json` を確認します。
+3. 版が変わっていたら自動で再読み込みします。復習の途中や付箋の編集中は中断せず、画面下のバナーで知らせて、ダッシュボードに戻った時点で反映します。
+
+学習記録（localStorage）は更新しても消えません。
+
+**初回のみ**：リポジトリの Settings → Pages → Build and deployment の Source を「GitHub Actions」にしてください。
