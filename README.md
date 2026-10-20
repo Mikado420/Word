@@ -6,3 +6,19 @@
 - **アウトプットモード**：1枚ずつのカード復習。4段階の自己採点からFSRSで次回出題日を計算。読んだページ・付箋だけに絞って出題可能。
 
 学習記録はブラウザの localStorage に保存されます。`index.html` をブラウザで開くだけで動きます。
+
+## ファイル構成
+
+```
+index.html        画面の骨組み（viewport設定を含む）
+css/style.css     デザイン・テーマ（ライト/ダーク）
+js/data.js        単語データ（ここに追加すれば単語が増える）
+js/storage.js     学習記録の保存（localStorage）
+js/fsrs.js        復習間隔の計算（FSRS）
+js/utils.js       共通ヘルパー
+js/book.js        インプットモード（単語帳ページ・赤シート・付箋）
+js/review.js      アウトプットモード（ダッシュボード・復習カード）
+js/app.js         モード切替・キー操作・起動
+```
+
+ES Modules を使っていないので、`index.html` をダブルクリックで開いても動きます。
