@@ -49,7 +49,61 @@ const RAW=[
 ["sufficient","形","十分な","We have sufficient evidence.","我々には十分な証拠がある。","⇔ insufficient"],
 ["vague","形","漠然とした","He gave only a vague answer.","彼はあいまいな答えしかしなかった。","≒ ambiguous"]
 ];
-const WORDS=RAW.map((r,i)=>({id:i+1,w:r[0],pos:r[1],m:r[2],en:r[3],ja:r[4],rel:r[5]}));
-const PER=6, PAGES=Math.ceil(WORDS.length/PER);
+
+/* ミニマルフレーズ・発音記号・注意マーク（*…* が見出し語と訳の対応部分）
+   mark: 発=発音注意 ア=アクセント注意 多=多義語 */
+const EXTRA={
+abandon:["əbǽndən","","*abandon* the plan","計画を*断念する*"],
+acquire:["əkwáɪər","","*acquire* a new language","新しい言語を*習得する*"],
+adequate:["ǽdɪkwət","ア","*adequate* food for everyone","全員分の*十分な*食料"],
+anticipate:["æntísəpèɪt","","*anticipate* a big crowd","大勢の人出を*予想する*"],
+apparent:["əpǽrənt","","for no *apparent* reason","*はっきりした*理由もなく"],
+approach:["əpróʊtʃ","多","a new *approach* to the problem","その問題への新しい*取り組み方*"],
+assume:["əsúːm","","*assume* that he is right","彼が正しいと*思い込む*"],
+attribute:["ətríbjuːt","ア","*attribute* success to luck","成功を運の*おかげと考える*"],
+cease:["siːs","発","*cease* to exist","存在しなく*なる*"],
+coherent:["koʊhíərənt","","a *coherent* argument","*首尾一貫した*主張"],
+comprehend:["kɑ̀mprɪhénd","","*comprehend* the meaning","意味を*理解する*"],
+conceive:["kənsíːv","","*conceive* of a world without war","戦争のない世界を*想像する*"],
+consequence:["kɑ́nsəkwèns","ア","the *consequences* of the decision","その決定の*結果*"],
+considerable:["kənsídərəbl","","a *considerable* amount of money","*かなりの*額のお金"],
+contradict:["kɑ̀ntrədíkt","","*contradict* the facts","事実と*矛盾する*"],
+convey:["kənvéɪ","","*convey* a message","メッセージを*伝える*"],
+crucial:["krúːʃəl","","play a *crucial* role","*極めて重要な*役割を果たす"],
+decline:["dɪkláɪn","多","*decline* an invitation","招待を*断る*"],
+deliberate:["dɪlíbərət","発","a *deliberate* lie","*意図的な*嘘"],
+derive:["dɪráɪv","","*derive* from Latin","ラテン語に*由来する*"],
+distinguish:["dɪstíŋɡwɪʃ","","*distinguish* right from wrong","善悪を*区別する*"],
+elaborate:["ɪlǽbərət","発","an *elaborate* design","*精巧な*デザイン"],
+eliminate:["ɪlímənèɪt","","*eliminate* waste","無駄を*取り除く*"],
+emerge:["ɪmə́ːrdʒ","","*emerge* from the dark","暗がりから*現れる*"],
+enhance:["ɪnhǽns","","*enhance* the quality of life","生活の質を*高める*"],
+evaluate:["ɪvǽljuèɪt","","*evaluate* the results","結果を*評価する*"],
+evident:["évɪdənt","ア","become *evident*","*明らか*になる"],
+exaggerate:["ɪɡzǽdʒərèɪt","発","*exaggerate* the danger","危険を*誇張する*"],
+feasible:["fíːzəbl","","a *feasible* plan","*実行可能な*計画"],
+fundamental:["fʌ̀ndəméntl","","a *fundamental* change","*根本的な*変化"],
+hypothesis:["haɪpɑ́θəsɪs","ア","test a *hypothesis*","*仮説*を検証する"],
+imply:["ɪmpláɪ","","*imply* a lack of interest","関心のなさを*暗に示す*"],
+indispensable:["ìndɪspénsəbl","","*indispensable* to our lives","私たちの生活に*不可欠な*"],
+inevitable:["ɪnévɪtəbl","ア","an *inevitable* result","*避けられない*結果"],
+inherent:["ɪnhíərənt","","risks *inherent* in the job","その仕事に*本来伴う*危険"],
+interpret:["ɪntə́ːrprɪt","ア","*interpret* the data","データを*解釈する*"],
+maintain:["meɪntéɪn","多","*maintain* world peace","世界平和を*維持する*"],
+neglect:["nɪɡlékt","","*neglect* one's duty","義務を*怠る*"],
+obtain:["əbtéɪn","","*obtain* information","情報を*得る*"],
+perceive:["pərsíːv","","*perceive* a change","変化に*気づく*"],
+phenomenon:["fɪnɑ́mənɑ̀n","ア","a natural *phenomenon*","自然*現象*"],
+precise:["prɪsáɪs","","*precise* instructions","*正確な*指示"],
+prevail:["prɪvéɪl","","the view that *prevails* today","今日*広まっている*見方"],
+pursue:["pərsúː","","*pursue* a dream","夢を*追い求める*"],
+reluctant:["rɪlʌ́ktənt","","be *reluctant* to admit it","それを*認めたがらない*"],
+substantial:["səbstǽnʃəl","","a *substantial* increase","*かなりの*増加"],
+sufficient:["səfíʃənt","","*sufficient* evidence","*十分な*証拠"],
+vague:["veɪɡ","発","a *vague* answer","*あいまいな*答え"]
+};
+const WORDS=RAW.map((r,i)=>{const x=EXTRA[r[0]]||["","",r[0],r[2]];return {id:i+1,w:r[0],pos:r[1],m:r[2],en:r[3],ja:r[4],rel:r[5],ipa:x[0],mark:x[1],ph:x[2],phj:x[3]};});
+const PER=8, PAGES=Math.ceil(WORDS.length/PER);
+const STAGE=100; // 100語ごとに1ステージ
 const COLORS={yellow:"苦手",pink:"要注意",green:"例文",blue:"派生"};
 

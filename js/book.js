@@ -1,6 +1,7 @@
 /* ---------- INPUT: book ---------- */
 function renderBook(){
-  const p=S.page, list=WORDS.slice(p*PER,p*PER+PER);
+  if(S.page>=PAGES)S.page=PAGES-1;
+  const p=S.page, stage=Math.floor(p*PER/STAGE)+1, list=WORDS.slice(p*PER,p*PER+PER);
   list.forEach(w=>S.read[w.id]=1); save();
   const tabs=Object.keys(S.notes).map(Number).sort((a,b)=>a-b).map(id=>{const n=S.notes[id],w=WORDS[id-1];return `<button class="tab c-${n.color}" data-jump="${id}">${esc(w.w)}</button>`}).join("");
   $("#view").innerHTML=`
@@ -11,27 +12,30 @@ function renderBook(){
     </div>
     <div class="tabs" aria-label="付箋一覧">${tabs}</div>
     <section class="page ${S.sheet?"sheet-on":""}" id="page">
-      <div class="pghead"><h2>Section ${Math.floor(p/2)+1}</h2><span>No.${pad(p*PER+1)}–${pad(p*PER+list.length)}</span></div>
+      <div class="pghead"><h2>STAGE ${stage}</h2><span>No.${pad(p*PER+1)} – ${pad(p*PER+list.length)}</span></div>
+      <div class="colhead" aria-hidden="true"><span></span><span>Minimal Phrase</span><span>意味</span></div>
       ${list.map(w=>{const n=S.notes[w.id],lv=level(w.id);return `
-      <article class="entry" id="e${w.id}">
-        <div class="num">${pad(w.id)}</div>
-        <div class="ebody">
-          <div class="head"><span class="word">${esc(w.w)}</span><span class="pos">${w.pos}</span><span class="lv l${lv}">${["未学習","学習中","定着"][lv]}</span></div>
-          <div class="mean" data-mean>${esc(w.m)}</div>
-          <div class="ex"><span class="en">${hl(w.en,w.w)}</span><span class="ja">${esc(w.ja)}</span></div>
-          ${w.rel?`<div class="rel">${esc(w.rel)}</div>`:""}
+      <article class="entry" id="e${w.id}" data-id="${w.id}">
+        <div class="side">
+          <span class="num">${pad(w.id)}</span>
+          <span class="lvdot l${lv}" title="${["未学習","学習中","定着"][lv]}"></span>
+          <button class="tagbtn" data-tag="${w.id}" aria-label="${esc(w.w)} に付箋">${tagIcon}</button>
         </div>
-        <button class="tagbtn" data-tag="${w.id}" aria-label="${esc(w.w)} に付箋">${tagIcon}</button>
-        ${n?`<button class="sticky c-${n.color}" data-tag="${w.id}" aria-label="付箋を編集">${COLORS[n.color]}</button>`:""}
+        <div class="phen">${mk(w.ph)}</div>
+        <div class="phja r">${mk(w.phj)}</div>
+        <div class="hw"><span class="word">${esc(w.w)}</span>${markTag(w.mark)}<span class="ipa">[${esc(w.ipa)}]</span></div>
+        <div class="mn"><span class="pos">${w.pos}</span><span class="r mean">${esc(w.m)}</span></div>
+        ${w.rel?`<div class="note"><span>◆</span>${esc(w.rel)}</div>`:""}
         ${n&&n.memo?`<div class="memo c-${n.color}">${esc(n.memo)}</div>`:""}
+        ${n?`<button class="sticky c-${n.color}" data-tag="${w.id}" aria-label="付箋を編集">${COLORS[n.color]}</button>`:""}
       </article>`}).join("")}
-      <div class="pgfoot">— ${p+1} —</div>
+      <div class="pgfoot">${p+1}</div>
     </section>
-    <p class="hint">赤シートONで意味を隠し、タップでめくれます。左右スワイプでページ移動。読んだページの単語がアウトプットに出題されます。</p>
+    <p class="hint">フレーズごと覚えて、赤シートで右側の日本語を隠して確認。行をタップするとその単語だけめくれます。左右スワイプでページ移動。読んだページの単語がアウトプットに出題されます。</p>
   </div>`;
   $("#sheetbtn").onclick=()=>{S.sheet=!S.sheet;save();renderBook();};
   $("#prev").onclick=()=>go(-1); $("#next").onclick=()=>go(1);
-  document.querySelectorAll("[data-mean]").forEach(el=>el.onclick=()=>{if(S.sheet)el.classList.toggle("peek");});
+  document.querySelectorAll(".entry").forEach(el=>el.onclick=e=>{if(S.sheet&&!e.target.closest("button"))el.classList.toggle("peek");});
   document.querySelectorAll("[data-tag]").forEach(el=>el.onclick=()=>openNote(+el.dataset.tag));
   document.querySelectorAll("[data-jump]").forEach(el=>el.onclick=()=>{const id=+el.dataset.jump;S.page=Math.floor((id-1)/PER);renderBook();const e=$("#e"+id);if(e){e.scrollIntoView({block:"center",behavior:"smooth"});e.classList.add("flash");setTimeout(()=>e.classList.remove("flash"),900);}});
   const pg=$("#page");let x0=null,y0=0;

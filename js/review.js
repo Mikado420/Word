@@ -74,12 +74,14 @@ function renderCard(){
       <span class="tagline">${isNew?"NEW":"REVIEW"} · No.${pad(id)}</span>
       ${n?`<span class="badge c-${n.color}"></span>`:""}
       <div class="w">${esc(w.w)}</div>
+      <div class="cph">${mk(w.ph)}</div>
       ${sess.shown?`<div class="ans">
-        <span class="pos">${w.pos}</span>
-        <div class="m">${esc(w.m)}</div>
+        <div class="cphj">${mk(w.phj)}</div>
+        <div class="cmn"><span class="pos">${w.pos}</span><span class="m">${esc(w.m)}</span></div>
+        <div class="cipa">${markTag(w.mark)}<span class="ipa">[${esc(w.ipa)}]</span></div>
         <div class="ex"><span class="en">${hl(w.en,w.w)}</span><span class="ja">${esc(w.ja)}</span></div>
         ${n&&n.memo?`<div class="memo c-${n.color}">${esc(n.memo)}</div>`:""}
-      </div>`:`<div class="tap">意味を思い浮かべてからタップ</div>`}
+      </div>`:`<div class="tap">フレーズの意味を思い浮かべてからタップ</div>`}
     </section>
     ${sess.shown?`<div class="grades">
       ${["もう一度","難しい","できた","簡単"].map((l,i)=>`<button class="g g${i+1}" data-g="${i+1}">${l}<small>${fmt(pv[i].ivl)}</small></button>`).join("")}
