@@ -103,7 +103,7 @@ sufficient:["səfíʃənt","","*sufficient* evidence","*十分な*証拠"],
 vague:["veɪɡ","発","a *vague* answer","*あいまいな*答え"]
 };
 const WORDS=RAW.map((r,i)=>{const x=EXTRA[r[0]]||["","",r[0],r[2]];return {id:i+1,w:r[0],pos:r[1],m:r[2],en:r[3],ja:r[4],rel:r[5],ipa:x[0],mark:x[1],ph:x[2],phj:x[3]};});
-const PER=8, PAGES=Math.ceil(WORDS.length/PER);
+const PER=5, PAGES=Math.ceil(WORDS.length/PER);
 const STAGE=100; // 100語ごとに1ステージ
 const COLORS={yellow:"苦手",pink:"要注意",green:"例文",blue:"派生"};
 

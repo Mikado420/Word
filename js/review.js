@@ -77,7 +77,7 @@ function renderCard(){
       <div class="cph">${mk(w.ph)}</div>
       ${sess.shown?`<div class="ans">
         <div class="cphj">${mk(w.phj)}</div>
-        <div class="cmn"><span class="pos">${w.pos}</span><span class="m">${esc(w.m)}</span></div>
+        <div class="cmn"><span class="pos">${w.pos}</span><span class="m def">${fmtDef(w.d)}</span></div>
         <div class="cipa">${markTag(w.mark)}<span class="ipa">[${esc(w.ipa)}]</span></div>
         <div class="ex"><span class="en">${hl(w.en,w.w)}</span><span class="ja">${esc(w.ja)}</span></div>
         ${n&&n.memo?`<div class="memo c-${n.color}">${esc(n.memo)}</div>`:""}
