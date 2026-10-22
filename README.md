@@ -22,7 +22,7 @@ js/redsheet.js    赤シート（ドラッグで動かせる半透明の板）
 js/book.js        インプットモード（単語帳ページ・赤シート・付箋）
 js/review.js      アウトプットモード（ダッシュボード・復習カード）
 js/updater.js     自動更新（version.json の監視）
-js/menu.js        左上メニュー（モード・赤シート・ページ・付箋）
+js/menu.js        左上メニュー（モード・ページ・付箋・単語データ・表示テーマ）
 js/app.js         モード切替・キー操作・ズーム防止・起動
 sw.js             Service Worker（オフライン対応・最新優先）
 manifest.json     ホーム画面に追加するための設定
