@@ -3,7 +3,7 @@
  * 左列＝英語、右列＝日本語。赤シートは右列にかかり、赤字だけが消える
  */
 function renderBook(){
-  if(!WORDS.length) return renderImport();
+  if(!WORDS.length) return autoLoad();
   S.checks=S.checks||{};
   if(typeof S.pos!=="number") S.pos=(S.page||0)*5;
   // まず枠だけ描いて紙面の高さを測り、収まる語数でページ割りする

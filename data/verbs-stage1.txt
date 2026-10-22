@@ -1,0 +1,966 @@
+英単語帳データ（動詞 Stage 1）
+
+0. 表記方法
+
+◆：黒いひし形が付いている語法・重要表現
+◇：白いひし形が付いている関連語・派生語・補足表現
+【赤字：〇〇】：赤色で表記されている文字・語句
+【補足】：文法上の注意・解説
+【問題】：確認問題
+【答え】：解答
+
+※◆・◇は元の記号に合わせて記載する。
+※赤字部分は【赤字：…】で囲む。
+※判読できる範囲を記録する。
+
+1. MINIMAL PHRASES（基本フレーズ）
+
+1〜10
+
+No.1
+英語：【赤字：follow】 her advice
+日本語：彼女の助言に【赤字：従う】
+
+No.2
+英語：【赤字：consider】 the problem seriously
+日本語：真剣にその問題を【赤字：考える】
+
+No.3
+英語：【赤字：increase】 【赤字：by】 20%
+日本語：20%【赤字：増加する】
+
+No.4
+英語：【赤字：expect】 you 【赤字：to】 arrive soon
+日本語：君がすぐ着くことを【赤字：予期する】
+
+No.5
+英語：【赤字：decide】 【赤字：to】 tell the truth
+日本語：真実を語る【赤字：決意をする】
+
+No.6
+英語：【赤字：develop】 a unique ability
+日本語：特異な能力を【赤字：発達させる】
+
+No.7
+英語：【赤字：provide】 him 【赤字：with】 information
+日本語：彼に情報を【赤字：与える】
+
+No.8
+英語：【赤字：continue】 【赤字：to】 grow fast
+日本語：急速に成長し【赤字：続ける】
+
+No.9
+英語：The list 【赤字：includes】 his name.
+日本語：リストは彼の名前を【赤字：含んでいる】
+
+No.10
+英語：【赤字：remain】 silent
+日本語：黙った【赤字：ままでいる】
+
+11〜20
+
+No.11
+英語：【赤字：reach】 the mountain top
+日本語：山頂に【赤字：達する】
+
+No.12
+英語：【赤字：allow】 him 【赤字：to】 go out
+日本語：彼に外出を【赤字：許可する】
+
+No.13
+英語：【赤字：be forced to】 work
+日本語：働くよう【赤字：強制される】
+
+No.14
+英語：【赤字：offer】 help 【赤字：to】 the poor
+日本語：貧しい人に援助を【赤字：申し出る】
+
+No.15
+英語：【赤字：realize】 the error
+日本語：まちがいを【赤字：悟る】
+
+No.16
+英語：【赤字：suggest】 a new way
+日本語：新しいやり方を【赤字：提案する】
+
+No.17
+英語：【赤字：require】 more attention
+日本語：もっと注意を【赤字：必要とする】
+
+No.18
+英語：【赤字：worry about】 money
+日本語：お金のことを【赤字：心配する】
+
+No.19
+英語：【赤字：wonder】 where he has gone
+日本語：彼はどこに行ったのかと【赤字：思う】
+
+No.20
+英語：The car 【赤字：cost】 me $50,000.
+日本語：その車には5万ドル【赤字：かかった】
+
+21〜30
+
+No.21
+英語：【赤字：tend to】 get angry
+日本語：腹を立て【赤字：がちである】
+
+No.22
+英語：Everything 【赤字：depends on】 him.
+日本語：すべては彼【赤字：しだいだ】
+
+No.23
+英語：【赤字：share】 a room 【赤字：with】 a friend
+日本語：友人と部屋を【赤字：共有する】
+
+No.24
+英語：【赤字：demand】 more freedom
+日本語：もっと自由を【赤字：要求する】
+
+No.25
+英語：【赤字：support】 the president
+日本語：大統領を【赤字：支持する】
+
+No.26
+英語：【赤字：hire】 many young people
+日本語：多くの若者を【赤字：雇う】
+
+No.27
+英語：【赤字：regard】 him 【赤字：as】 a friend
+日本語：彼を友達と【赤字：みなす】
+
+No.28
+英語：This story 【赤字：is based on】 fact.
+日本語：この話は事実に【赤字：基づいている】
+
+No.29
+英語：【赤字：improve】 living conditions
+日本語：生活状態を【赤字：向上させる】
+
+No.30
+英語：【赤字：recognize】 the importance
+日本語：重要性を【赤字：認める】
+
+31〜40
+
+No.31
+英語：【赤字：notice】 the color change
+日本語：色彩の変化に【赤字：気づく】
+
+No.32
+英語：You 【赤字：are supposed to】 wear a seat belt.
+日本語：シートベルトを締める【赤字：ことになっている】
+
+No.33
+英語：【赤字：raise】 both hands
+日本語：両手を【赤字：上げる】
+
+No.34
+英語：【赤字：prefer】 tea 【赤字：to】 coffee
+日本語：コーヒーよりお茶を【赤字：好む】
+
+No.35
+英語：【赤字：cheer up】 the patients
+日本語：患者たちを【赤字：元気づける】
+
+No.36
+英語：【赤字：suffer】 heavy damage
+日本語：ひどい損害を【赤字：受ける】
+
+No.37
+英語：【赤字：describe】 the lost bag
+日本語：なくしたバッグの特徴を【赤字：言う】
+
+No.38
+英語：【赤字：prevent】 him 【赤字：from】 sleeping
+日本語：彼が眠るのを【赤字：さまたげる】
+
+No.39
+英語：【赤字：reduce】 energy costs
+日本語：エネルギー費を【赤字：減らす】
+
+No.40
+英語：【赤字：mistake】 salt 【赤字：for】 sugar
+日本語：塩を砂糖と【赤字：まちがえる】
+
+41〜49
+
+No.41
+英語：【赤字：prepare】 a room 【赤字：for】 a guest
+日本語：客のために部屋を【赤字：準備する】
+
+No.42
+英語：【赤字：encourage】 children 【赤字：to】 read
+日本語：子供に読書を【赤字：すすめる】
+
+No.43
+英語：【赤字：prove to be】 true
+日本語：本当【赤字：だとわかる】
+
+No.44
+英語：【赤字：treat】 him like a child
+日本語：子供みたいに彼を【赤字：あつかう】
+
+No.45
+英語：【赤字：establish】 a company
+日本語：会社を【赤字：設立する】
+
+No.46
+英語：stress-【赤字：related】 illness
+日本語：ストレスと【赤字：関係のある】病気
+
+No.47
+英語：【赤字：compare】 Japan 【赤字：with】 China
+日本語：日本と中国を【赤字：比較する】
+
+No.48
+英語：【赤字：spread】 the tablecloth
+日本語：テーブルクロスを【赤字：広げる】
+
+No.49
+英語：What does this word 【赤字：refer to】?
+日本語：この語は何を【赤字：指示する】か
+
+2. 見出し語・意味・語法・派生語
+
+1. follow
+
+【発音】[fɑ́lou]
+
+【意味】
+①〜の（後に）続く
+②（指示・方針などに）従う
+
+◆ as follows ＝ 次のように
+◇ following ＝ 次の、以下のような
+◆ A (be) followed by B ＝ Aの次にBが続く
+
+2. consider
+
+【発音】[kənsídər]
+
+【意味】
+〜を考慮する、〜とみなす
+
+◆ consider (+ A + (as) B) ＝ AをBとみなす
+
+◇ consideration（名）＝ 考慮、思いやり
+◇ considerate（形）＝ 思いやりのある
+◇ considering（前）＝ 〜を考慮すると
+
+【補足】
+consider to V は不可。
+consider は他動詞なので about は不要。
+
+【問題】
+I considered about his proposal. はなぜだめ？
+
+3. increase
+
+【発音】[inkríːs]
+
+【意味】
+増える、〜を増やす
+
+⇔ decrease ＝ 減る、〜を減らす
+
+◇ increasingly（副）＝ ますます（more and more）
+
+4. expect
+
+【発音】[ikspékt]
+
+【意味】
+〜を予期する、予想する、期待する
+
+◆ expect to V ＝ Vするつもりだ、Vする予定だ
+◆ expect A to V ＝ AがVするのを予期する
+◆ expect A from [of] B ＝ AをBに期待する
+
+◇ expectation（名）＝ 予期、期待
+
+【関連表現】
+life expectancy ＝ 平均寿命
+
+5. decide
+
+【発音】[disáid]
+
+【意味】
+〜することを決意する、〜を決定する、〜と判断する
+
+◆ decide to V ＝ Vする決意をする
+
+【補足】
+to Vが約40%。
+to V-ing は不可。
+
+◇ decision（名）＝ 決意、決定
+◇ decisive（形）＝ 決定的な、断固とした
+
+6. develop
+
+【発音】[divéləp]
+
+【意味】
+①発達する、〜を発達させる
+②〜を開発する
+
+◆ developing country ＝ 発展途上国
+◆ developed country ＝ 先進国
+
+◇ development（名）＝ 発達、成長、開発
+
+7. provide
+
+【発音】[prəváid]
+
+【意味】
+〜を供給する、与える
+
+◆ provide A with B ＝ AにBを与える
+◆ provide B for [to] A ＝ AにBを与える
+◆ provide for A ＝ Aに備える、Aを養う
+
+◇ provision（名）＝ 供給、用意
+◇ provided = providing（接）＝ もし〜ならば（if）
+
+8. continue
+
+【発音】[kəntínjuː]
+
+【意味】
+続く、（〜を）続ける（= go on, carry on）
+
+◇ continuous（形）＝ 絶え間ない、休みない
+◇ continual（形）＝ 繰り返される
+◇ continuity（名）＝ 連続性
+
+9. include
+
+【発音】[inklúːd]
+
+【意味】
+〜を含む、含める
+
+⇔ exclude ＝ 〜を除外する
+
+◇ including（前）＝ 〜を含めて
+
+10. remain
+
+【発音】[riméin]
+
+【意味】
+①（ある状態の）ままでいる
+②とどまる、残る
+
+【名詞の意味】
+遺物、遺跡、化石、残り物
+
+◆ remain to be Ved ＝ これからVされねばならない
+
+11. reach
+
+【発音】[ríːtʃ]
+
+【意味】
+〜に着く（= arrive at）、〜に達する
+
+【名詞の意味】
+届く範囲
+
+◆ reach for A ＝ Aをとろうと手をのばす
+◆ within A’s reach ＝ Aの手の届く範囲に
+
+【補足】
+「〜に着く」の意味では reach は他動詞なので、to は不要。
+
+【問題】
+We reached to the hotel. の誤りは？
+
+12. allow
+
+【発音】[əláu]
+
+【意味】
+①〜を許可する、許す
+②〜を可能にする（= enable）
+
+◆ allow A to V ＝ AがVするのを許す、可能にする
+◆ allow for A ＝ Aを考慮に入れる
+
+⇔ forbid ＝ 〜を禁ずる
+
+【関連語】
+permit ＝ 許可する
+let ＝ 許可する
+forgive ＝ （過ち・人などを）許す
+
+13. force
+
+【発音】[fɔ́ːrs]
+
+【意味】
+〜を強制する
+
+【名詞の意味】
+力、暴力（= violence）；軍隊
+
+【関連表現】
+the air force ＝ 空軍
+
+◆ be forced to V ＝ Vするのを強制される、Vせざるをえない
+
+14. offer
+
+【発音】[ɔ́fər]
+
+【意味】
+〜を申し出る、〜を与える
+
+◆ offer to V ＝ Vすると申し出る
+
+◇ offering（名）＝ 申し出、提供、供え物
+
+15. realize
+
+【発音】[ríːəlaiz]
+
+【意味】
+①〜を悟る、〜に気づく（+ that〜）
+②〜を実現する
+
+【例文】
+realize your dream ＝ 君の夢を実現する
+
+◇ realization（名）＝ ①認識、理解 ②実現
+
+16. suggest
+
+【発音】[sədʒést]
+
+【意味】
+①〜と提案する
+②〜をほのめかす、暗示［示唆］する
+
+◆ suggest (to A) that S + (should) 原形V
+
+◇ suggestion（名）＝ 提案、暗示
+
+【補足】
+提案の意味では、that節中に原形Vか should + V を使う。
+ほのめかす意味では、that節中は普通の時制を使う。
+
+【問題】
+I suggested that he (　) there.
+① went
+② go
+
+17. require
+
+【発音】[rikwáiər]
+
+【意味】
+〜を必要とする（= need）
+〜を要求する（= demand）
+
+◇ requirement（名）＝ 要求される物、必要条件
+
+【補足】
+that節は suggest の①と同じく、原形Vか should V。
+
+18. worry
+
+【発音】[wə́ːri]
+
+【意味】
+心配する、〜に心配させる
+
+【名詞の意味】
+心配（事）
+
+◆ be worried about A ＝ Aのことを心配する
+
+【問題】
+He worried me. と He worried about me. の違いは？
+
+【答え】
+He worried me. ＝ 彼は私に心配をかけた。
+He worried about me. ＝ 彼は私のことで心配した。
+
+19. wonder
+
+【発音】[wʌ́ndər]
+
+【意味】
+①（+ wh/if節）〜かと疑問に思う
+②（+ at A）Aに驚く、Aを不思議に思う
+
+◆ (it is) no wonder (that)〜 ＝ 〜は不思議ではない、当然だ
+
+◇ wonderful（形）＝ すばらしい
+
+20. cost
+
+【意味】
+①（費用）を要する
+②〜を奪う
+
+【名詞の意味】
+費用、犠牲
+
+【活用】
+cost – cost – cost
+
+【例文】
+The accident cost him a leg.
+＝ 事故が彼の片足を奪った。
+
+◆ cost (A) B ＝ （Aに）B（費用）がかかる
+
+◇ costly（形）＝ 高価な、損失の大きい
+
+21. tend
+
+【発音】[ténd]
+
+【意味】
+（+ to V）Vする傾向がある、Vしがちである
+
+◇ tendency（名）＝ 傾向、癖
+
+22. depend
+
+【発音】[dipénd]
+
+【意味】
+（+ on A）Aに依存する、Aしだいで決まる
+
+◆ depending on A ＝ Aしだいで、Aにより
+
+◇ dependent（形）＝ 依存する
+◇ dependence（名）＝ 依存
+
+【関連表現】
+That depends.
+It (all) depends.
+＝ それは状況しだいだ。
+
+23. share
+
+【発音】[ʃéər]
+
+【意味】
+〜を分け合う、共有する、一緒に使う
+
+【名詞の意味】
+分け前、分担、役割
+
+【関連表現】
+market share ＝ 市場占有率
+
+◆ share A with B ＝ AをBと分かち合う
+
+24. demand
+
+【発音】[dimǽnd]
+
+【意味】
+①〜を要求する、必要とする
+②（〜を）問う
+
+【名詞の意味】
+要求、需要（+ for）
+
+【関連語】
+supply ＝ 供給
+
+◆ demand that S + (should) 原形V ＝ 〜と要求する
+
+◇ demanding（形）＝ 骨の折れる、要求の厳しい
+
+【補足】
+A + O + to V の形はない。
+
+【例文】
+I demanded that she (should) tell me the truth.
+＝ 彼女に真実を話すよう要求した。
+
+25. support
+
+【発音】[səpɔ́ːrt]
+
+【意味】
+①〜を支持する、援助する
+②（家族など）を養う
+③〜を立証する、裏付ける
+
+【名詞の意味】
+支持、援助
+
+【例文】
+support the theory ＝ 理論を立証する
+
+26. hire
+
+【発音】[háɪər]
+
+【意味】
+〜を雇う；（有料で車などを）借りる
+
+【補足】
+米語では employ と同様に用いるが、英語では短期の雇用に用いる。
+
+27. regard
+
+【発音】[rigɑ́ːrd]
+
+【意味】
+（+ A as B）AをBだと思う、みなす
+
+◆ with [in] regard to A ＝ Aに関しては
+◆ regarding A ＝ Aに関して
+◆ regardless of A ＝ Aに関係なく
+
+28. base
+
+【発音】[béis]
+
+◆ A be based on B ＝ AがBに基づいている
+◆ base A on B ＝ Aの基礎をBに置く
+
+【名詞の意味】
+①基礎、根拠
+②基地
+
+◇ basic（形）＝ 基礎的な
+◇ basement（名）＝ 地下室、地階
+
+29. improve
+
+【発音】[imprúːv]
+
+【意味】
+〜を向上させる、改善する；向上する、進歩する
+
+◇ improvement（名）＝ 進歩、改善
+
+30. recognize
+
+【発音】[rékəgnaiz]
+
+【意味】
+①〜を認める
+②〜を識別する、〜だとわかる
+
+【例文】
+I recognized Tom at once.
+＝ すぐにトムだとわかった。
+
+◇ recognition（名）＝ 認識、承認
+
+31. notice
+
+【発音】[nóutis]
+
+【意味】
+〜に気づく、〜だとわかる
+
+【名詞の意味】
+通知、掲示；注意
+
+◆ take notice of A ＝ Aに注意する
+
+◇ noticeable（形）＝ 目立つ、著しい
+
+32. suppose
+
+【発音】[səpóuz]
+
+【意味】
+〜だと思う、想像する、仮定する
+
+◆ be supposed to V ＝ Vすることになっている、Vすべきだ、Vするはずだ（= should）
+◆ Suppose (that)〜 ＝ もし〜だとしたら（どうだろう）
+◆ Supposing (that)〜 ＝ もし〜だとしたら（どうだろう）
+
+◇ supposedly（副）＝ たぶん、おそらく
+
+33. raise
+
+【発音】[réiz]
+
+【意味】
+①〜を上げる
+②〜を育てる（= bring up）
+③（問題など）を提起する
+
+【名詞の意味】
+賃上げ（= pay raise）
+
+【補足】
+自動詞は rise（上がる、起きる）。
+
+34. prefer
+
+【発音】[prifə́ːr]
+
+【意味】
+〜をより好む
+
+◆ prefer A to B ＝ BよりもAを好む（A、Bには名詞・動名詞）
+◆ prefer to V₁ rather than (to) V₂ ＝ V₂よりもV₁することを好む
+
+◇ preference（名）＝ 好み、好物
+◇ preferable（形）＝ より好ましい、ましな
+
+35. cheer
+
+【発音】[tʃíər]
+
+【意味】
+①〜を励ます
+②声援する（+ for）
+
+【名詞の意味】
+声援、励まし
+
+◆ cheer A up ＝ Aを励ます、元気づける
+◆ cheer up ＝ 元気を出す
+
+◇ cheerful（形）＝ 陽気な
+
+36. suffer
+
+【発音】[sʌ́fər]
+
+【意味】
+（苦痛・損害など）を経験する、受ける；
+（病気などで）苦しむ、損害を受ける
+
+◆ suffer from A ＝ A（病気など）で苦しむ
+
+◇ suffering（名）＝ 苦しみ
+
+【補足】
+suffer from A は、苦痛がある期間続くときに用いられ、進行形が多い。
+
+37. describe
+
+【発音】[diskráib]
+
+【意味】
+〜を描写する、〜の特徴を説明する
+
+◇ description（名）＝ 描写、説明
+
+38. prevent
+
+【発音】[privént]
+
+【意味】
+〜をさまたげる、防ぐ、させない
+
+◆ prevent A from V-ing ＝ AがVするのをさまたげる
+
+◇ prevention（名）＝ 防止、予防
+
+39. reduce
+
+【発音】[ridjúːs]
+
+【意味】
+①〜を減らす
+②（+ A to B）AをBにする、変える
+
+◆ be reduced to A ＝ Aになる、変えられる
+
+【補足】
+より低い、小さい状態への変化に用いる。
+
+【例文】
+be reduced to poverty ＝ 貧乏になる
+
+◇ reduction（名）＝ 減少、削減、割引
+
+40. mistake
+
+【発音】[mistéik]
+
+【意味】
+〜を誤解する、まちがえる
+
+【名詞の意味】
+誤り、まちがい
+
+◆ mistake A for B ＝ AをBとまちがえる
+
+◇ mistaken（形）＝ 誤った、まちがっている
+
+【例文】
+He is often mistaken for his brother.
+＝ 彼はよく弟とまちがわれる。
+
+You are mistaken about it.
+＝ あなたはそれについてまちがっている。
+
+【補足】
+1つ目は動詞 mistake の受身。2つ目の mistaken は形容詞。
+
+41. prepare
+
+【発音】[pripéər]
+
+【意味】
+（〜の）準備をする（+ for）、（〜を）用意する
+
+◆ be prepared for A ＝ Aに備えている
+
+◇ preparation（名）＝ 準備、用意
+
+42. encourage
+
+【発音】[inkə́ːridʒ]
+
+【意味】
+（人を）はげます、〜を促進する
+
+◆ encourage A to V ＝ AにVするようすすめる
+
+⇔ discourage ＝ 人のやる気をそぐ
+
+◆ discourage A from V-ing ＝ AにVする気をなくさせる
+
+◇ encouragement（名）＝ はげまし、促進
+
+43. prove
+
+【発音】[prúːv]
+
+【意味】
+①〜だとわかる（= turn out）
+②〜を証明する
+
+◇ proof（名）＝ 証拠、証明
+
+44. treat
+
+【発音】[tríːt]
+
+【意味】
+〜をあつかう；〜を手当てする
+
+◇ treatment（名）＝
+①楽しみ、喜び
+②おごり
+③取り扱い、待遇；治療
+
+【問題】
+This is my treat. の意味は？
+
+【答え】
+これは僕のおごりだ。
+
+45. establish
+
+【発音】[istǽbliʃ]
+
+【意味】
+〜を設立する、創立する（= found）；
+（事実など）を確定する、立証する
+
+◆ establish oneself ＝ 定着する
+
+◇ establishment（名）＝
+①施設、組織（学校、会社など）
+②設立
+③支配層、上層部
+
+【例文】
+a research establishment ＝ 研究施設
+the medical establishment ＝ 医学界
+
+46. relate
+
+【発音】[riléit]
+
+【意味】
+①関係がある；〜を関係づける
+②〜を述べる、話す
+
+◆ be related to A ＝ Aと関係がある
+
+◇ relation（名）＝ 関係
+◇ relationship（名）＝ 関係
+◇ correlation（名）＝ 相関；相互関係
+
+【例文】
+drug-related crime ＝ 麻薬関係の犯罪
+
+【補足】
+relation と relationship はほぼ同意だが、感情がこもった親密な人間関係には relationship が多く用いられる。
+
+47. compare
+
+【発音】[kəmpéər]
+
+【意味】
+①〜を比較する
+②〜をたとえる
+③匹敵する、比べられる
+
+◆ compare A with B ＝ AとBを比較する
+◆ compare A to B ＝ AをBにたとえる、AとBを比較する
+
+◇ comparison（名）＝ 比較；たとえ
+◇ comparatively（副）＝ 比較的、かなり
+◇ comparable（形）＝ 比較できる、同等の
+
+【問題】
+Life is compared (　) a voyage.
+
+【答え】
+to
+
+【訳】
+人生は航海にたとえられる。
+
+48. spread
+
+【発音】[spréd]
+
+【意味】
+〜を広げる；広がる
+
+【名詞の意味】
+広がり、広めること
+
+【活用】
+spread – spread – spread
+
+49. refer
+
+【発音】[rifə́ːr]
+
+【意味】
+（+ to A）Aを指示する；Aに言及する；Aを参照する
+
+◆ refer to A as B ＝ AをBと呼ぶ（= call A B）
+
+◇ reference（名）＝ 言及；参照
+
+3. 確認問題一覧
+
+1. I considered about his proposal. はなぜだめ？
+2. life expectancy の意味は？
+3. We reached to the hotel. の誤りは？
+4. forgive と allow の違いは？
+5. I suggested that he (　) there. ① went ② go
+6. He worried me. と He worried about me. の違いは？
+7. That depends. の意味は？
+8. I demanded her to tell me the truth. はなぜ誤りか？
+9. This is my treat. の意味は？
+10. Life is compared (　) a voyage.
+
+以上。

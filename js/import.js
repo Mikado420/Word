@@ -133,6 +133,30 @@ explain は人を目的語にとらない。Explain the rules to me. が正し�
 ◇ arrival（名）＝ 到着
 `;
 
+/* 解析済みデータを保存して起動し直す（学習記録・付箋はリセット） */
+function applyBook(parsed){
+  try{localStorage.setItem(DATA_KEY,JSON.stringify({title:parsed.title,words:parsed.words,at:Date.now()}));}catch(e){return false;}
+  const nos=parsed.words.map(w=>w.no);
+  Object.assign(S,{cards:{},notes:{},read:{},checks:{},pos:0,page:0,newLog:null,mode:"in"});
+  S.cfg=Object.assign(S.cfg||{},{from:Math.min(...nos),to:Math.max(...nos),scope:"read"});
+  save();location.reload();return true;
+}
+
+/* data/ に登録された単語データを取得して解析 */
+async function fetchBook(b){
+  const r=await fetch(b.file,{cache:"no-cache"});
+  if(!r.ok) throw new Error(r.status);
+  return await r.text();
+}
+
+/* 単語が未登録の端末では、登録済みの先頭データを自動で読み込む（失敗したら読み込み画面） */
+async function autoLoad(){
+  if(!BOOKS.length) return renderImport();
+  $("#view").innerHTML=`<div class="dash"><p class="hint" style="text-align:center">単語データを読み込んでいます…</p></div>`;
+  try{const p=parseBook(await fetchBook(BOOKS[0]));if(p.words.length&&applyBook(p))return;}catch(e){}
+  renderImport();
+}
+
 /* 読み込み画面 */
 function renderImport(back){
   RedSheet.unmount();
@@ -162,6 +186,10 @@ function renderImport(back){
         <textarea id="paste" placeholder="ここに貼り付けることもできます"></textarea>
         <button class="btn ghost" id="read">貼り付けた内容を読み込む</button>
       </section>
+      ${BOOKS.length?`<section class="panel">
+        <span class="lbl">登録済みの単語データ</span>
+        ${BOOKS.map((b,i)=>`<button class="btn pri" data-book="${i}">${esc(b.title)}</button>`).join("")}
+      </section>`:""}
       <section class="panel">
         <span class="lbl">書式</span>
         <pre class="fmt">No.1
@@ -185,13 +213,11 @@ function renderImport(back){
     const sm=$("#sample");if(sm)sm.onclick=()=>go(SAMPLE);
     const cc=$("#cancel");if(cc)cc.onclick=()=>render();
     const rr=$("#redo");if(rr)rr.onclick=()=>{parsed=null;draw();};
-    const ap=$("#apply");if(ap)ap.onclick=()=>{
-      try{localStorage.setItem(DATA_KEY,JSON.stringify({title:parsed.title,words:parsed.words,at:Date.now()}));}catch(e){ap.textContent="保存できませんでした（ブラウザの保存領域を確認してください）";return;}
-      const nos=parsed.words.map(w=>w.no);
-      Object.assign(S,{cards:{},notes:{},read:{},checks:{},pos:0,page:0,newLog:null,mode:"in"});
-      S.cfg=Object.assign(S.cfg||{},{from:Math.min(...nos),to:Math.max(...nos),scope:"read"});
-      save();location.reload();
-    };
+    const ap=$("#apply");if(ap)ap.onclick=()=>{if(!applyBook(parsed))ap.textContent="保存できませんでした（ブラウザの保存領域を確認してください）";};
+    document.querySelectorAll("[data-book]").forEach(b=>b.onclick=async()=>{
+      const t=b.textContent;b.disabled=true;b.textContent="読み込み中…";
+      try{go(await fetchBook(BOOKS[+b.dataset.book]));}catch(e){b.disabled=false;b.textContent=t+"（読み込めませんでした）";}
+    });
   };
   draw();
 }
