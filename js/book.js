@@ -17,6 +17,7 @@ function renderBook(){
   $("#view").innerHTML=shell(p,PAGES,pageInner(stage,list,phrases,entries));
   if($("#page").scrollHeight>$("#page").clientHeight+2)$("#page").classList.add("tall");
   bindBook();
+  RedSheet.mount();
 }
 function phraseRow(w){return `
       <div class="mprow" data-peek>
@@ -47,15 +48,15 @@ function pageInner(stage,list,phrases,entries){
       <div class="pgfoot"><button class="pgnav" data-go="-1" aria-label="前のページ" ${S.page<=0?"disabled":""}>‹</button><span>${S.page+1} / ${PAGES||1}</span><button class="pgnav" data-go="1" aria-label="次のページ" ${S.page>=PAGES-1?"disabled":""}>›</button></div>`;
 }
 function shell(p,total,inner){
-  return `<section class="page ${S.sheet?"sheet-on":""}" id="page">${inner}</section>`;
+  return `<section class="page" id="page">${inner}</section>`;
 }
-function toggleSheet(){S.sheet=!S.sheet;save();const pg=$("#page");if(pg)pg.classList.toggle("sheet-on",S.sheet);}
+function toggleSheet(){RedSheet.toggle();}
 function jumpTo(id){S.pos=id-1;save();renderBook();const e=$("#e"+id);if(e){e.scrollIntoView({block:"nearest"});e.classList.add("flash");setTimeout(()=>e.classList.remove("flash"),900);}}
 /* 全単語を紙面と同じ幅で測り、上から詰めて1画面に収まるページ割りを作る */
 let pages=[],PAGES=0;
 function paginate(real){
   const H=real.clientHeight, m=document.createElement("section");
-  m.className="page measure"+(S.sheet?" sheet-on":"");m.style.width=real.offsetWidth+"px";
+  m.className="page measure";m.style.width=real.offsetWidth+"px";
   m.innerHTML=pageInner(1,WORDS,WORDS.map(phraseRow).join(""),WORDS.map(entryBlock).join(""));
   document.body.appendChild(m);
   const rows=[...m.querySelectorAll(".mprow")].map(e=>e.offsetHeight);
@@ -70,8 +71,8 @@ function paginate(real){
 }
 function bindBook(){
   document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(+b.dataset.go));
-  document.querySelectorAll("[data-peek]").forEach(el=>el.onclick=e=>{if(S.sheet&&!e.target.closest("button"))el.classList.toggle("peek");});
-  document.querySelectorAll("[data-ck]").forEach(el=>el.onclick=()=>{const id=+el.dataset.ck;if(S.checks[id])delete S.checks[id];else S.checks[id]=1;save();el.setAttribute("aria-pressed",!!S.checks[id]);});
+  document.querySelectorAll("[data-peek]").forEach(el=>el.onclick=e=>{if(S.sheet&&!e.target.closest("button")){el.classList.toggle("peek");RedSheet.sync();}});
+  document.querySelectorAll("[data-ck]").forEach(el=>el.onclick=()=>{const id=+el.dataset.ck;if(S.checks[id])delete S.checks[id];else S.checks[id]=1;save();el.setAttribute("aria-pressed",!!S.checks[id]);RedSheet.sync();});
   document.querySelectorAll("[data-tag]").forEach(el=>el.onclick=()=>openNote(+el.dataset.tag));
   const pg=$("#page");let x0=null,y0=0;
   pg.addEventListener("touchstart",e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});

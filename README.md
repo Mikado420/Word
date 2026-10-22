@@ -16,6 +16,7 @@ js/data.js        単語データ（ここに追加すれば単語が増える�
 js/storage.js     学習記録の保存（localStorage）
 js/fsrs.js        復習間隔の計算（FSRS）
 js/utils.js       共通ヘルパー
+js/redsheet.js    赤シート（ドラッグで動かせる半透明の板）
 js/book.js        インプットモード（単語帳ページ・赤シート・付箋）
 js/review.js      アウトプットモード（ダッシュボード・復習カード）
 js/updater.js     自動更新（version.json の監視）

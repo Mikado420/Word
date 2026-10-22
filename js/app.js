@@ -1,6 +1,6 @@
 /* ---------- mode ---------- */
 function setMode(m){S.mode=m;save();sess=null;render();}
-function render(){S.mode==="in"?renderBook():(sess?renderCard():renderDash());}
+function render(){if(S.mode!=="in")RedSheet.unmount();S.mode==="in"?renderBook():(sess?renderCard():renderDash());}
 
 /* 拡大縮小を防ぐ：ピンチ（iOSのgesture系）とダブルタップ（CSSの touch-action）を無効化 */
 ["gesturestart","gesturechange","gestureend"].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));

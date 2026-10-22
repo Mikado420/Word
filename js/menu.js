@@ -1,5 +1,5 @@
 /* ---------- メニュー（左上のボタンから開くドロワー） ----------
- * モード切替・赤シート・ページ移動・付箋一覧・復習の終了をここに集約し、
+ * モード切替・ページ移動・付箋一覧・復習の終了をここに集約し、
  * それ以外の画面はすべて紙面／カードに使う
  */
 function openMenu(){
@@ -13,7 +13,6 @@ function openMenu(){
       <button data-mode="out" aria-pressed="${!inBook}">アウトプット</button>
     </div>
     ${inBook?`
-    <button class="dtoggle" id="dsheet" aria-pressed="${!!S.sheet}"><span>赤シート</span><span class="knob" aria-hidden="true"></span></button>
     <div class="dsec"><span class="lbl">ページ</span>
       <div class="pgrid">${pages.map(([a],i)=>`<button data-pg="${i}" aria-current="${i===S.page?"page":"false"}" title="${esc(WORDS[a].w)}〜">${i+1}</button>`).join("")}</div>
     </div>
@@ -25,7 +24,6 @@ function openMenu(){
   </nav>`;
   document.querySelectorAll("#drawer [data-close]").forEach(b=>b.onclick=closeMenu);
   document.querySelectorAll("#drawer [data-mode]").forEach(b=>b.onclick=()=>{closeMenu();if(b.dataset.mode!==S.mode)setMode(b.dataset.mode);});
-  const ds=$("#dsheet");if(ds)ds.onclick=()=>{toggleSheet();ds.setAttribute("aria-pressed",!!S.sheet);};
   document.querySelectorAll("#drawer [data-pg]").forEach(b=>b.onclick=()=>{closeMenu();S.pos=pages[+b.dataset.pg][0];save();renderBook();});
   document.querySelectorAll("#drawer [data-jump]").forEach(b=>b.onclick=()=>{closeMenu();jumpTo(+b.dataset.jump);});
   const dq=$("#dquit");if(dq)dq.onclick=()=>{closeMenu();sess=null;renderDash();};
