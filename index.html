@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#E4E8E2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#10141A" media="(prefers-color-scheme: dark)">
 <title>赤シート単語帳</title>
@@ -17,15 +17,10 @@
 </head>
 <body>
 <div class="app">
-  <header class="top">
-    <div class="brand"><i></i>赤シート単語帳</div>
-    <div class="modes" role="group" aria-label="モード">
-      <button id="m-in" aria-pressed="true">インプット</button>
-      <button id="m-out" aria-pressed="false">アウトプット</button>
-    </div>
-  </header>
   <main id="view"></main>
 </div>
+<button id="menubtn" class="menubtn" aria-label="メニュー"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3.5 5.5h13M3.5 10h13M3.5 14.5h13"/></svg></button>
+<div id="drawer"></div>
 <div id="layer"></div>
 
 
@@ -37,6 +32,7 @@
 <script src="js/book.js"></script>
 <script src="js/review.js"></script>
 <script src="js/updater.js"></script>
+<script src="js/menu.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

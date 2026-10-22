@@ -44,19 +44,13 @@ function pageInner(stage,list,phrases,entries){
   return `<div class="pghead"><h2>Phrases</h2><span>STAGE ${stage} · ${list.length?list[0].id+"–"+list[list.length-1].id:""}</span></div>
       <div class="mp">${phrases}</div>
       <div class="ents">${entries}</div>
-      <div class="pgfoot">${S.page+1}</div>`;
+      <div class="pgfoot"><button class="pgnav" data-go="-1" aria-label="前のページ" ${S.page<=0?"disabled":""}>‹</button><span>${S.page+1} / ${PAGES||1}</span><button class="pgnav" data-go="1" aria-label="次のページ" ${S.page>=PAGES-1?"disabled":""}>›</button></div>`;
 }
 function shell(p,total,inner){
-  const tabs=Object.keys(S.notes).map(Number).sort((a,b)=>a-b).map(id=>{const n=S.notes[id],w=WORDS[id-1];return `<button class="tab c-${n.color}" data-jump="${id}">${esc(w.w)}</button>`}).join("");
-  return `<div class="book">
-    <div class="bar">
-      <button class="chip" id="sheetbtn" aria-pressed="${S.sheet}">赤シート ${S.sheet?"ON":"OFF"}</button>
-      <div class="pager"><button id="prev" aria-label="前のページ" ${p===0?"disabled":""}>‹</button>p.${p+1} / ${total}<button id="next" aria-label="次のページ" ${p>=total-1?"disabled":""}>›</button></div>
-    </div>
-    <div class="tabs" aria-label="付箋一覧">${tabs}</div>
-    <section class="page ${S.sheet?"sheet-on":""}" id="page">${inner}</section>
-  </div>`;
+  return `<section class="page ${S.sheet?"sheet-on":""}" id="page">${inner}</section>`;
 }
+function toggleSheet(){S.sheet=!S.sheet;save();const pg=$("#page");if(pg)pg.classList.toggle("sheet-on",S.sheet);}
+function jumpTo(id){S.pos=id-1;save();renderBook();const e=$("#e"+id);if(e){e.scrollIntoView({block:"nearest"});e.classList.add("flash");setTimeout(()=>e.classList.remove("flash"),900);}}
 /* 全単語を紙面と同じ幅で測り、上から詰めて1画面に収まるページ割りを作る */
 let pages=[],PAGES=0;
 function paginate(real){
@@ -65,8 +59,8 @@ function paginate(real){
   m.innerHTML=pageInner(1,WORDS,WORDS.map(phraseRow).join(""),WORDS.map(entryBlock).join(""));
   document.body.appendChild(m);
   const rows=[...m.querySelectorAll(".mprow")].map(e=>e.offsetHeight);
-  const ents=[...m.querySelectorAll(".ent")].map(e=>e.offsetHeight+1);
-  const over=m.offsetHeight-rows.reduce((a,b)=>a+b,0)-ents.reduce((a,b)=>a+b,0)+4;
+  const ents=[...m.querySelectorAll(".ent")].map(e=>e.offsetHeight);
+  const over=m.offsetHeight-rows.reduce((a,b)=>a+b,0)-ents.reduce((a,b)=>a+b,0)+20; // 20px は折り返しの誤差に備えた余白
   m.remove();
   const out=[];let i=0;
   while(i<WORDS.length){let h=over,j=i;
@@ -75,18 +69,16 @@ function paginate(real){
   return out;
 }
 function bindBook(){
-  $("#sheetbtn").onclick=()=>{S.sheet=!S.sheet;save();renderBook();};
-  $("#prev").onclick=()=>go(-1); $("#next").onclick=()=>go(1);
+  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(+b.dataset.go));
   document.querySelectorAll("[data-peek]").forEach(el=>el.onclick=e=>{if(S.sheet&&!e.target.closest("button"))el.classList.toggle("peek");});
   document.querySelectorAll("[data-ck]").forEach(el=>el.onclick=()=>{const id=+el.dataset.ck;if(S.checks[id])delete S.checks[id];else S.checks[id]=1;save();el.setAttribute("aria-pressed",!!S.checks[id]);});
   document.querySelectorAll("[data-tag]").forEach(el=>el.onclick=()=>openNote(+el.dataset.tag));
-  document.querySelectorAll("[data-jump]").forEach(el=>el.onclick=()=>{const id=+el.dataset.jump;S.pos=id-1;save();renderBook();const e=$("#e"+id);if(e){e.classList.add("flash");setTimeout(()=>e.classList.remove("flash"),900);}});
   const pg=$("#page");let x0=null,y0=0;
   pg.addEventListener("touchstart",e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
   pg.addEventListener("touchend",e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(dx<0?1:-1);x0=null;},{passive:true});
 }
 function go(d){const n=S.page+d;if(n<0||n>=PAGES)return;S.pos=pages[n][0];save();renderBook();}
-let _rz;window.addEventListener("resize",()=>{clearTimeout(_rz);_rz=setTimeout(()=>{if(S.mode==="in"&&!$("#layer").innerHTML.trim())renderBook();},150);});
+let _rz;window.addEventListener("resize",()=>{clearTimeout(_rz);_rz=setTimeout(()=>{if(S.mode==="in"&&!$("#layer").innerHTML.trim()){const o=menuOpen();renderBook();if(o)openMenu();}},150);});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(S.mode==="in")renderBook();});
 
 function openNote(id){

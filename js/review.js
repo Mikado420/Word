@@ -20,7 +20,8 @@ function renderDash(){
   const fc=[...Array(7)].map((_,i)=>{const a=today.getTime()+i*DAY,b=a+DAY;return learned.filter(w=>{const d=S.cards[w.id].due;return i===0?d<b:d>=a&&d<b}).length});
   const mx=Math.max(1,...fc),wd="日月火水木金土";
   $("#view").innerHTML=`
-  <div style="display:flex;flex-direction:column;gap:12px">
+  <div class="dash">
+  <div class="vhead"><h1>今日の復習</h1></div>
   <section class="panel">
     <div class="stats">
       <div class="stat due"><b>${due.length}</b><span>今日の復習</span></div>
@@ -45,7 +46,6 @@ function renderDash(){
     <p class="hint">忘れかける直前（想起率90%の地点）に出題されるよう、1枚ずつ次回の日付を計算しています。</p>
   </section>
   <button class="btn warn" id="reset" style="align-self:center">学習記録をリセット</button>
-  <p class="hint" style="text-align:center">バージョン ${esc(Updater.version||"—")}</p>
   </div>`;
   document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{S.filter=b.dataset.f;save();renderDash();});
   $("#go").onclick=startSession;
@@ -68,8 +68,8 @@ function renderCard(){
   const pv=previews(c,now);
   const isNew=!(c&&c.reps);
   $("#view").innerHTML=`
-  <div style="display:flex;flex-direction:column;gap:12px">
-    <div class="prog"><button id="quit">✕ 終了</button><div class="track"><i style="width:${sess.done/sess.total*100}%"></i></div><span>${sess.done} / ${sess.total}</span></div>
+  <div class="rv">
+    <div class="prog"><div class="track"><i style="width:${sess.done/sess.total*100}%"></i></div><span>${sess.done} / ${sess.total}</span></div>
     <section class="card" id="card" aria-live="polite">
       <span class="tagline">${isNew?"NEW":"REVIEW"} · No.${pad(id)}</span>
       ${n?`<span class="badge c-${n.color}"></span>`:""}
@@ -88,7 +88,6 @@ function renderCard(){
     </div><div class="kbd">キー 1〜4 でも採点できます</div>`
     :`<button class="btn pri reveal" id="show">答えを見る</button><div class="kbd">スペースキーでも答えを表示</div>`}
   </div>`;
-  $("#quit").onclick=()=>{sess=null;renderDash();};
   if(!sess.shown){$("#card").onclick=reveal;$("#show").onclick=reveal;}
   else document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>grade(+b.dataset.g));
 }
@@ -102,7 +101,7 @@ function grade(g){
 }
 function renderDone(){
   const t=sess.tally,min=Math.max(1,Math.round((Date.now()-sess.t0)/6e4)),acc=sess.total?Math.round((t[1]+t[2]+t[3])/(t[0]+t[1]+t[2]+t[3])*100):0;
-  $("#view").innerHTML=`<section class="panel done">
+  $("#view").innerHTML=`<div class="dash"><div class="vhead"></div><section class="panel done">
     <h2>おつかれさま</h2>
     <p>${sess.total}語を約${min}分で復習しました。初回正答率 ${acc}%</p>
     <div class="stats" style="width:100%">
@@ -111,7 +110,7 @@ function renderDone(){
       <div class="stat"><b style="color:var(--easy)">${t[3]}</b><span>簡単</span></div>
     </div>
     <button class="btn pri" id="back" style="width:100%">ダッシュボードへ</button>
-  </section>`;
+  </section></div>`;
   $("#back").onclick=()=>{sess=null;renderDash();};
 }
 

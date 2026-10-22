@@ -19,7 +19,8 @@ js/utils.js       共通ヘルパー
 js/book.js        インプットモード（単語帳ページ・赤シート・付箋）
 js/review.js      アウトプットモード（ダッシュボード・復習カード）
 js/updater.js     自動更新（version.json の監視）
-js/app.js         モード切替・キー操作・起動
+js/menu.js        左上メニュー（モード・赤シート・ページ・付箋）
+js/app.js         モード切替・キー操作・ズーム防止・起動
 sw.js             Service Worker（オフライン対応・最新優先）
 manifest.json     ホーム画面に追加するための設定
 version.json      版番号（公開時に自動で書き換え）
