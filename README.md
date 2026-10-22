@@ -23,20 +23,17 @@ js/menu.js        左上メニュー（モード・赤シート・ページ・�
 js/app.js         モード切替・キー操作・ズーム防止・起動
 sw.js             Service Worker（オフライン対応・最新優先）
 manifest.json     ホーム画面に追加するための設定
-version.json      版番号（公開時に自動で書き換え）
 ```
 
 ES Modules を使っていないので、`index.html` をダブルクリックで開いても動きます。
 
 ## 自動更新のしくみ
 
-1. `main` にプッシュすると GitHub Actions が `version.json` にコミットIDを書き込んで Pages に公開します。
-2. アプリは起動時・画面に戻ったとき・5分ごとに `version.json` を確認します。
-3. 版が変わっていたら自動で再読み込みします。復習の途中や付箋の編集中は中断せず、画面下のバナーで知らせて、ダッシュボードに戻った時点で反映します。
+アプリは起動時・画面に戻ったとき・3分ごとに、公開中の `index.html` と、そこから読み込む CSS・JS の中身を取得して比べます。
+1文字でも変わっていれば新しい版と判断して自動で再読み込みします（版番号の管理は不要）。
+復習の途中や付箋の編集中は中断せず、画面下のバナーで知らせて、ダッシュボードに戻った時点で反映します。
 
-学習記録（localStorage）は更新しても消えません。
-
-**初回のみ**：リポジトリの Settings → Pages → Build and deployment の Source を「GitHub Actions」にしてください。
+学習記録（localStorage）は更新しても消えません。GitHub Pages は Settings → Pages の「Deploy from a branch（main / root）」で公開します。
 
 ## 単語データの書き方
 
