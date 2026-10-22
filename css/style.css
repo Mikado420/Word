@@ -26,16 +26,23 @@ body{margin:0}
   --mark:rgba(79,191,159,.28); --hlja:rgba(255,111,125,.12); --s-yellow:#E3CF66; --s-pink:#E595A8; --s-green:#8CC9A0; --s-blue:#8DB8DE;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); color-scheme:dark}
 
-html,body{height:100%}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
 body{background:var(--desk);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));-webkit-tap-highlight-color:transparent}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--desk)}
 button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.app{max-width:560px;margin:0 auto;padding-block:12px 40px;display:flex;flex-direction:column;gap:14px}
+/* 1画面固定：ヘッダー・操作列・紙面が画面の高さにぴったり収まり、ページ全体はスクロールしない */
+.app{max-width:560px;height:100%;margin:0 auto;padding-block:6px 10px;display:flex;flex-direction:column;gap:8px}
+#view{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.book{height:100%;display:flex;flex-direction:column;gap:8px}
+.book>.page{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.book>.page.tall{overflow-y:auto}
+.page .ents{flex:1}
+.page.measure{position:absolute!important;left:-9999px;top:0;visibility:hidden;height:auto!important;display:block}
 
 /* header */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--desk);padding-block:8px;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.top{flex:none;padding-block:4px;display:flex;align-items:center;gap:12px;justify-content:space-between}
 .brand{font-family:var(--f-disp);font-weight:800;font-size:17px;white-space:nowrap;letter-spacing:.02em;display:flex;align-items:center;gap:8px}
 .brand i{width:14px;height:18px;background:var(--red);border-radius:2px;opacity:.85;display:inline-block}
 .modes{display:flex;background:var(--paper);border:1px solid var(--rule);border-radius:999px;padding:3px}

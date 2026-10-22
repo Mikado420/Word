@@ -3,17 +3,27 @@
  * 左列＝英語、右列＝日本語。赤シートは右列にかかり、赤字だけが消える
  */
 function renderBook(){
-  if(S.page>=PAGES)S.page=PAGES-1;
   S.checks=S.checks||{};
-  const p=S.page, stage=Math.floor(p*PER/STAGE)+1, list=WORDS.slice(p*PER,p*PER+PER);
+  if(typeof S.pos!=="number") S.pos=(S.page||0)*5;
+  // まず枠だけ描いて紙面の高さを測り、収まる語数でページ割りする
+  $("#view").innerHTML=shell(S.page||0,PAGES||1,"");
+  pages=paginate($("#page"));PAGES=pages.length;
+  let p=pages.findIndex(([a,b])=>S.pos>=a&&S.pos<b); if(p<0)p=0;
+  S.page=p; S.pos=pages[p][0];
+  const list=WORDS.slice(pages[p][0],pages[p][1]), stage=Math.floor(pages[p][0]/STAGE)+1;
   list.forEach(w=>S.read[w.id]=1); save();
-  const tabs=Object.keys(S.notes).map(Number).sort((a,b)=>a-b).map(id=>{const n=S.notes[id],w=WORDS[id-1];return `<button class="tab c-${n.color}" data-jump="${id}">${esc(w.w)}</button>`}).join("");
-  const phrases=list.map(w=>`
+  const phrases=list.map(phraseRow).join("");
+  const entries=list.map(entryBlock).join("");
+  $("#view").innerHTML=shell(p,PAGES,pageInner(stage,list,phrases,entries));
+  if($("#page").scrollHeight>$("#page").clientHeight+2)$("#page").classList.add("tall");
+  bindBook();
+}
+function phraseRow(w){return `
       <div class="mprow" data-peek>
         <div class="lc"><button class="ck" data-ck="${w.id}" aria-pressed="${!!S.checks[w.id]}" aria-label="${esc(w.w)} を覚えた"></button><span class="mpen">${mk(w.ph)}</span></div>
         <div class="rc mpja">${mk(w.phj).replace(/<b>(.+?)<\/b>/g,'<em class="r hl">$1</em>')}</div>
-      </div>`).join("");
-  const entries=list.map(w=>{const n=S.notes[w.id],lv=level(w.id);return `
+      </div>`;}
+function entryBlock(w){const n=S.notes[w.id],lv=level(w.id);return `
       <article class="ent" id="e${w.id}" data-peek>
         <div class="lc hwc">
           <div class="hn"><span class="num">${w.id}</span><span class="lvdot l${lv}" title="${["未学習","学習中","定着"][lv]}"></span></div>
@@ -29,33 +39,55 @@ function renderBook(){
         ${w.q?`<div class="lc qc"><span class="qa">Q</span><span>${esc(w.q[0])}</span></div><div class="rc ac"><span class="qa">A</span><span class="hid">${esc(w.q[1])}</span></div>`:""}
         ${n&&n.memo?`<div class="memo c-${n.color}">${esc(n.memo)}</div>`:""}
         ${n?`<button class="sticky c-${n.color}" data-tag="${w.id}" aria-label="付箋を編集">${COLORS[n.color]}</button>`:""}
-      </article>`}).join("");
-  $("#view").innerHTML=`
-  <div style="display:flex;flex-direction:column;gap:12px">
-    <div class="bar">
-      <button class="chip" id="sheetbtn" aria-pressed="${S.sheet}">赤シート ${S.sheet?"ON":"OFF"}</button>
-      <div class="pager"><button id="prev" aria-label="前のページ" ${p===0?"disabled":""}>‹</button>p.${p+1} / ${PAGES}<button id="next" aria-label="次のページ" ${p===PAGES-1?"disabled":""}>›</button></div>
-    </div>
-    <div class="tabs" aria-label="付箋一覧">${tabs}</div>
-    <section class="page ${S.sheet?"sheet-on":""}" id="page">
-      <div class="pghead"><h2>Phrases</h2><span>STAGE ${stage} · ${p*PER+1}–${p*PER+list.length}</span></div>
+      </article>`;}
+function pageInner(stage,list,phrases,entries){
+  return `<div class="pghead"><h2>Phrases</h2><span>STAGE ${stage} · ${list.length?list[0].id+"–"+list[list.length-1].id:""}</span></div>
       <div class="mp">${phrases}</div>
       <div class="ents">${entries}</div>
-      <div class="pgfoot">${p+1}</div>
-    </section>
-    <p class="hint">□ は覚えたフレーズのチェック欄。赤シートONで赤字とQの答えが消え、行をタップするとその部分だけ透けます。左右スワイプでページ移動。</p>
+      <div class="pgfoot">${S.page+1}</div>`;
+}
+function shell(p,total,inner){
+  const tabs=Object.keys(S.notes).map(Number).sort((a,b)=>a-b).map(id=>{const n=S.notes[id],w=WORDS[id-1];return `<button class="tab c-${n.color}" data-jump="${id}">${esc(w.w)}</button>`}).join("");
+  return `<div class="book">
+    <div class="bar">
+      <button class="chip" id="sheetbtn" aria-pressed="${S.sheet}">赤シート ${S.sheet?"ON":"OFF"}</button>
+      <div class="pager"><button id="prev" aria-label="前のページ" ${p===0?"disabled":""}>‹</button>p.${p+1} / ${total}<button id="next" aria-label="次のページ" ${p>=total-1?"disabled":""}>›</button></div>
+    </div>
+    <div class="tabs" aria-label="付箋一覧">${tabs}</div>
+    <section class="page ${S.sheet?"sheet-on":""}" id="page">${inner}</section>
   </div>`;
+}
+/* 全単語を紙面と同じ幅で測り、上から詰めて1画面に収まるページ割りを作る */
+let pages=[],PAGES=0;
+function paginate(real){
+  const H=real.clientHeight, m=document.createElement("section");
+  m.className="page measure"+(S.sheet?" sheet-on":"");m.style.width=real.offsetWidth+"px";
+  m.innerHTML=pageInner(1,WORDS,WORDS.map(phraseRow).join(""),WORDS.map(entryBlock).join(""));
+  document.body.appendChild(m);
+  const rows=[...m.querySelectorAll(".mprow")].map(e=>e.offsetHeight);
+  const ents=[...m.querySelectorAll(".ent")].map(e=>e.offsetHeight+1);
+  const over=m.offsetHeight-rows.reduce((a,b)=>a+b,0)-ents.reduce((a,b)=>a+b,0)+4;
+  m.remove();
+  const out=[];let i=0;
+  while(i<WORDS.length){let h=over,j=i;
+    while(j<WORDS.length&&j-i<MAX_PER&&(j===i||h+rows[j]+ents[j]<=H)){h+=rows[j]+ents[j];j++;}
+    out.push([i,j]);i=j;}
+  return out;
+}
+function bindBook(){
   $("#sheetbtn").onclick=()=>{S.sheet=!S.sheet;save();renderBook();};
   $("#prev").onclick=()=>go(-1); $("#next").onclick=()=>go(1);
   document.querySelectorAll("[data-peek]").forEach(el=>el.onclick=e=>{if(S.sheet&&!e.target.closest("button"))el.classList.toggle("peek");});
   document.querySelectorAll("[data-ck]").forEach(el=>el.onclick=()=>{const id=+el.dataset.ck;if(S.checks[id])delete S.checks[id];else S.checks[id]=1;save();el.setAttribute("aria-pressed",!!S.checks[id]);});
   document.querySelectorAll("[data-tag]").forEach(el=>el.onclick=()=>openNote(+el.dataset.tag));
-  document.querySelectorAll("[data-jump]").forEach(el=>el.onclick=()=>{const id=+el.dataset.jump;S.page=Math.floor((id-1)/PER);renderBook();const e=$("#e"+id);if(e){e.scrollIntoView({block:"center",behavior:"smooth"});e.classList.add("flash");setTimeout(()=>e.classList.remove("flash"),900);}});
+  document.querySelectorAll("[data-jump]").forEach(el=>el.onclick=()=>{const id=+el.dataset.jump;S.pos=id-1;save();renderBook();const e=$("#e"+id);if(e){e.classList.add("flash");setTimeout(()=>e.classList.remove("flash"),900);}});
   const pg=$("#page");let x0=null,y0=0;
   pg.addEventListener("touchstart",e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
   pg.addEventListener("touchend",e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(dx<0?1:-1);x0=null;},{passive:true});
 }
-function go(d){const n=S.page+d;if(n<0||n>=PAGES)return;S.page=n;save();renderBook();window.scrollTo({top:0});}
+function go(d){const n=S.page+d;if(n<0||n>=PAGES)return;S.pos=pages[n][0];save();renderBook();}
+let _rz;window.addEventListener("resize",()=>{clearTimeout(_rz);_rz=setTimeout(()=>{if(S.mode==="in"&&!$("#layer").innerHTML.trim())renderBook();},150);});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(S.mode==="in")renderBook();});
 
 function openNote(id){
   const w=WORDS[id-1],n=S.notes[id]||{color:"yellow",memo:""};let color=n.color;
