@@ -84,7 +84,7 @@ function spread(q,gap=4){
 function cfgSummary(){
   const c=S.cfg;
   const sc=c.scope==="range"?`No.${Math.min(c.from,c.to)}–${Math.max(c.from,c.to)}`:SCOPES[c.scope];
-  return [c.forms.map(f=>FORMS[f].label).join("・"),sc,TARGETS[c.target],ORDERS[c.order]];
+  return [c.target==="all"?"総ざらい":"毎日の復習",c.forms.length>1?`${FORMS[c.forms[0]].label} ほか${c.forms.length-1}`:FORMS[c.forms[0]].label,sc,ORDERS[c.order]];
 }
 
 /* ---------- OUTPUT: dashboard ---------- */
@@ -127,54 +127,92 @@ function renderDash(){
   $("#reset").onclick=e=>{const b=e.currentTarget;if(b.dataset.c){S.cards={};S.newLog=null;save();renderDash();}else{b.dataset.c=1;b.textContent="もう一度押すとリセットします";}};
 }
 
-/* ---------- OUTPUT: 設定シート ---------- */
+/* ---------- OUTPUT: 設定シート ----------
+ * 最初は「いまの設定」を一覧で見せるだけにし、項目をタップしたときだけ選択肢の画面を開く（スマホの設定アプリ型）。
+ * 変更はその場で保存され、ダッシュボードにもすぐ反映される。
+ */
+const SCOPE_SUB={read:"単語帳で開いたページの単語",notes:"付箋を貼った単語",all:"収録されている全単語",range:"番号で範囲を決める"};
+const ORDER_SUB={smart:"思い出せる確率が低い語から（おすすめ）",number:"単語帳の番号どおり",random:"毎回ばらばらに",weak:"よく間違える語から"};
+const fmtDate=e=>{const d=new Date(e+"T00:00:00");return `${d.getMonth()+1}月${d.getDate()}日`;};
 function openSettings(){
-  const c=S.cfg;
-  const seg=(name,map,cur)=>`<div class="seg" role="group">${Object.entries(map).map(([k,v])=>`<button data-${name}="${k}" aria-pressed="${cur===k}">${v}</button>`).join("")}</div>`;
-  const draw=()=>{
-    const ex=examInfo(Date.now());
+  const c=S.cfg;let view="main";
+  const check='<svg class="ck2" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const row=(k,label,val)=>`<button class="srow" data-go="${k}"><span class="sl">${label}</span><span class="sv">${val}</span><span class="chev" aria-hidden="true">›</span></button>`;
+  const opt=(attr,k,label,sub,on)=>`<button class="sopt" data-${attr}="${k}" aria-pressed="${on}"><span><b>${label}</b>${sub?`<small>${sub}</small>`:""}</span>${check}</button>`;
+  const stepper=(id,val,lo,hi)=>`<div class="stepper"><button data-step="${id}" data-d="-1" aria-label="減らす">−</button><input id="${id}" type="number" inputmode="numeric" min="${lo}" max="${hi}" value="${val}"><button data-step="${id}" data-d="1" aria-label="増やす">＋</button></div>`;
+
+  function main(){
+    const ex=examInfo(Date.now()), lim=counts(Date.now()).limit;
+    const forms=c.forms.map(f=>FORMS[f].label);
+    const scope=c.scope==="range"?`No.${Math.min(c.from,c.to)}–${Math.max(c.from,c.to)}`:c.scope==="notes"&&c.colors.length?`付箋（${c.colors.map(k=>COLORS[k]).join("・")}）`:SCOPES[c.scope];
+    return `
+      <div class="smodes">
+        ${[["due","毎日の復習","忘れかけた語と今日の新しい単語"],["all","総ざらい","範囲の単語を期限に関係なく全部"]].map(([k,t,d])=>`<button class="smode" data-target="${k}" aria-pressed="${c.target===k}"><b>${t}</b><small>${d}</small></button>`).join("")}
+      </div>
+      <div class="sgroup">
+        ${row("forms","出し方",forms.length>1?`${forms[0]} ほか${forms.length-1}`:forms[0])}
+        ${row("scope","範囲",esc(scope))}
+        ${row("order","順番",ORDERS[c.order])}
+      </div>
+      <div class="sgroup">
+        ${row("exam","試験日",ex?`${fmtDate(c.exam)}（あと${ex.days}日）`:"未設定")}
+        ${row("newn","新しい単語",(c.newMode==="auto"?"自動・":"")+`1日${lim}語`)}
+      </div>
+      ${ex?`<p class="snote">目標記憶率 ${Math.round(targetR()*100)}%。試験の前日までに全語がもう一度出るよう調整しています。</p>`:""}`;
+  }
+  const pages={
+    forms:["出し方",()=>`
+      <p class="snote">複数選べます。英→和と和→英は別々に記録されます。</p>
+      <div class="sgroup">${Object.entries(FORMS).map(([k,f])=>opt("form",k,f.label,f.sub,c.forms.includes(k))).join("")}</div>`],
+    scope:["範囲",()=>`
+      <div class="sgroup">${Object.entries(SCOPES).map(([k,v])=>opt("scope",k,v,SCOPE_SUB[k],c.scope===k)).join("")}</div>
+      ${c.scope==="notes"?`<p class="slabel">付箋の色（選ばなければすべて）</p><div class="colors">${Object.entries(COLORS).map(([k,v])=>`<button class="cchip c-${k}" data-color="${k}" aria-pressed="${c.colors.includes(k)}">${v}</button>`).join("")}</div>`:""}
+      ${c.scope==="range"?`<p class="slabel">番号</p><div class="srange">${stepper("from",c.from,1,WORDS.length)}<span>〜</span>${stepper("to",c.to,1,WORDS.length)}</div>`:""}`],
+    order:["順番",()=>`<div class="sgroup">${Object.entries(ORDERS).map(([k,v])=>opt("order",k,v,ORDER_SUB[k],c.order===k)).join("")}</div>`],
+    exam:["試験日",()=>{const ex=examInfo(Date.now());return `
+      <div class="sgroup spad"><input id="exam" class="sdate" type="date" value="${esc(c.exam)}"></div>
+      ${c.exam?`<button class="slink" id="noexam">試験日を消す</button>`:""}
+      <p class="snote">試験が近づくほど記憶率の目標を上げ、前日までに全語がもう一度出るように間隔を調整します。</p>
+      <ol class="rlist">${[["60日より前",90],["60〜31日前",92],["30〜8日前",95],["7日前から",97]].map(([t,r])=>{const on=ex&&Math.round(targetR()*100)===r;return `<li${on?' class="on"':""}><span>${t}</span><b>${r}%</b></li>`}).join("")}</ol>`;}],
+    newn:["新しい単語",()=>{const lim=counts(Date.now()).limit;return `
+      <div class="sgroup">
+        ${opt("newmode","auto","自動",examInfo(Date.now())?"試験の2週間前までに範囲を一巡できるペース":"1日15語。復習が多い日は減らす",c.newMode==="auto")}
+        ${opt("newmode","manual","自分で決める","",c.newMode==="manual")}
+      </div>
+      ${c.newMode==="manual"?`<p class="slabel">1日の語数</p><div class="srange">${stepper("newn",c.newN,0,200)}<span>語</span></div>`:`<p class="snote">今日は${lim}語です。</p>`}`;}]
+  };
+
+  function draw(dir){
+    const sub=pages[view];
     $("#layer").innerHTML=`<div class="scrim" id="scrim"></div>
     <div class="sheetpanel tall" role="dialog" aria-label="出題設定"><div class="sheetin">
-      <div class="shead"><h3>出題設定</h3><button class="btn pri" id="done" style="flex:none;padding:8px 16px">完了</button></div>
-
-      <div class="fset"><span class="lbl">出し方（複数選べます）</span>
-        <div class="forms">${Object.entries(FORMS).map(([k,f])=>`<button class="form" data-form="${k}" aria-pressed="${c.forms.includes(k)}"><b>${f.label}</b><small>${f.sub}</small></button>`).join("")}</div>
-        <p class="hint">英→和と和→英は別々に記録・スケジュールされます。同じ向きを2つ選ぶと毎回どちらかの形で出ます。</p>
+      <div class="shead">
+        ${sub?`<button class="sback" id="back" aria-label="設定に戻る">‹ 設定</button>`:"<span></span>"}
+        <h3>${sub?sub[0]:"出題設定"}</h3>
+        <button class="sdone" id="done">完了</button>
       </div>
-
-      <div class="fset"><span class="lbl">出題範囲</span>${seg("scope",SCOPES,c.scope)}
-        ${c.scope==="notes"?`<div class="colors">${Object.entries(COLORS).map(([k,v])=>`<button class="cchip c-${k}" data-color="${k}" aria-pressed="${c.colors.includes(k)}">${v}</button>`).join("")}</div><p class="hint">色を選ばなければ、すべての付箋が対象です。</p>`:""}
-        ${c.scope==="range"?`<div class="range"><label>No.<input id="from" type="number" inputmode="numeric" min="1" max="${WORDS.length}" value="${c.from}"></label><span>〜</span><label>No.<input id="to" type="number" inputmode="numeric" min="1" max="${WORDS.length}" value="${c.to}"></label></div>`:""}
-      </div>
-
-      <div class="fset"><span class="lbl">出題する語</span>${seg("target",TARGETS,c.target)}
-        <p class="hint">${c.target==="due"?"忘れかけた語と今日の新出だけを出します（普段の学習向け）。":"期限に関係なく範囲内を全部出します（テスト前の総ざらい向け）。結果は通常の記録にも反映されます。"}</p>
-      </div>
-
-      <div class="fset"><span class="lbl">順番</span>${seg("order",ORDERS,c.order)}</div>
-
-      <div class="fset"><span class="lbl">試験日</span>
-        <div class="range"><input id="exam" type="date" value="${esc(c.exam)}">${c.exam?`<button class="btn ghost" id="noexam" style="flex:none;padding:8px 12px">クリア</button>`:""}</div>
-        <p class="hint">${ex?`入試まで${ex.days}日。目標記憶率は${Math.round(targetR()*100)}%です（60日前まで90%→30日前92%→7日前95%→直前97%）。`:"設定すると、直前期ほど記憶率の目標を上げ、試験の前日までに全語がもう一度出るよう調整します。"}</p>
-      </div>
-
-      <div class="fset"><span class="lbl">1日の新しい単語</span>${seg("newmode",{auto:"自動",manual:"手動"},c.newMode)}
-        ${c.newMode==="manual"?`<div class="range"><input id="newn" type="number" inputmode="numeric" min="0" max="200" value="${c.newN}"><span>語 / 日</span></div>`:`<p class="hint">${ex?"試験の2週間前までに範囲を一巡できる数を毎日計算します。":"1日15語。"}復習が溜まっている日は自動で減らします。</p>`}
-      </div>
+      <div class="sbody ${dir||""}">${sub?sub[1]():main()}</div>
     </div></div>`;
-    const set=(k,v)=>{c[k]=v;save();draw();};
+    bind();
+  }
+  const set=(k,v)=>{c[k]=v;save();draw();};
+  function bind(){
     $("#scrim").onclick=close;$("#done").onclick=close;
+    const bk=$("#back");if(bk)bk.onclick=()=>{view="main";draw("fromleft");};
+    document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{view=b.dataset.go;draw("fromright");});
+    document.querySelectorAll("[data-target]").forEach(b=>b.onclick=()=>set("target",b.dataset.target));
     document.querySelectorAll("[data-form]").forEach(b=>b.onclick=()=>{const k=b.dataset.form;const f=c.forms.includes(k)?c.forms.filter(x=>x!==k):c.forms.concat(k);if(f.length)set("forms",f);});
     document.querySelectorAll("[data-scope]").forEach(b=>b.onclick=()=>set("scope",b.dataset.scope));
     document.querySelectorAll("[data-color]").forEach(b=>b.onclick=()=>{const k=b.dataset.color;set("colors",c.colors.includes(k)?c.colors.filter(x=>x!==k):c.colors.concat(k));});
-    document.querySelectorAll("[data-target]").forEach(b=>b.onclick=()=>set("target",b.dataset.target));
     document.querySelectorAll("[data-order]").forEach(b=>b.onclick=()=>set("order",b.dataset.order));
     document.querySelectorAll("[data-newmode]").forEach(b=>b.onclick=()=>set("newMode",b.dataset.newmode));
-    const num=(id,k,lo,hi)=>{const e=$("#"+id);if(e)e.onchange=()=>{const v=Math.round(+e.value);c[k]=Math.min(hi,Math.max(lo,isNaN(v)?lo:v));save();e.value=c[k];};};
-    num("from","from",1,WORDS.length);num("to","to",1,WORDS.length);num("newn","newN",0,200);
-    const ed=$("#exam");ed.onchange=()=>set("exam",ed.value||"");
+    const key={from:"from",to:"to",newn:"newN"},lim={from:[1,WORDS.length],to:[1,WORDS.length],newn:[0,200]};
+    const put=(id,v)=>{const [lo,hi]=lim[id];v=Math.round(+v);c[key[id]]=Math.min(hi,Math.max(lo,isNaN(v)?lo:v));save();const e=$("#"+id);if(e)e.value=c[key[id]];};
+    Object.keys(key).forEach(id=>{const e=$("#"+id);if(e)e.onchange=()=>put(id,e.value);});
+    document.querySelectorAll("[data-step]").forEach(b=>b.onclick=()=>{const id=b.dataset.step;put(id,c[key[id]]+(+b.dataset.d));});
+    const ed=$("#exam");if(ed)ed.onchange=()=>set("exam",ed.value||"");
     const ne=$("#noexam");if(ne)ne.onclick=()=>set("exam","");
-  };
+  }
   const close=()=>{$("#layer").innerHTML="";renderDash();};
   draw();
 }
