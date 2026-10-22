@@ -1,109 +1,11 @@
-/* ---------- data ---------- */
-const RAW=[
-["abandon","動","〜を捨てる、断念する","They had to abandon the plan because of the storm.","嵐のため計画を断念しなければならなかった。","≒ give up"],
-["acquire","動","〜を獲得する、習得する","Children acquire language surprisingly quickly.","子どもは驚くほど早く言語を習得する。","名 acquisition"],
-["adequate","形","十分な、適切な","The room has adequate light for reading.","その部屋には読書に十分な明かりがある。","≒ sufficient"],
-["anticipate","動","〜を予期する","We anticipate a large crowd at the festival.","祭りには大勢の人出が予想される。","名 anticipation"],
-["apparent","形","明らかな、見かけの","It soon became apparent that he was lying.","彼が嘘をついているのはすぐに明らかになった。","副 apparently 見たところ"],
-["approach","名・動","取り組み方；〜に近づく","We need a new approach to the problem.","その問題には新しい取り組み方が必要だ。","approach to 〜 の to に注意"],
-["assume","動","〜と思い込む、仮定する","Don't assume that everyone agrees with you.","皆が賛成していると思い込んではいけない。","名 assumption"],
-["attribute","動","AをBのせいにする(A to B)","She attributes her success to hard work.","彼女は成功を努力のおかげだと考えている。","アクセント：動 at-TRIB-ute"],
-["cease","動","終わる、〜をやめる","The factory ceased production last year.","その工場は昨年生産を停止した。","≒ stop"],
-["coherent","形","首尾一貫した","Your essay needs a more coherent argument.","君の小論文にはもっと一貫した論証が必要だ。",""],
-["comprehend","動","〜を理解する","He could not comprehend the size of the universe.","彼は宇宙の大きさを理解できなかった。","形 comprehensive 包括的な"],
-["conceive","動","〜を思いつく、想像する","It is hard to conceive of life without phones.","電話のない生活は想像しにくい。","名 concept"],
-["consequence","名","結果、重要性","Every choice has consequences.","あらゆる選択には結果が伴う。","副 consequently その結果"],
-["considerable","形","かなりの","The project took a considerable amount of time.","その計画にはかなりの時間がかかった。","× considerate 思いやりのある"],
-["contradict","動","〜と矛盾する、〜に反論する","The evidence contradicts his story.","証拠は彼の話と矛盾している。","名 contradiction"],
-["convey","動","〜を伝える、運ぶ","Words cannot convey how grateful I am.","どれほど感謝しているか言葉では伝えられない。",""],
-["crucial","形","決定的に重要な","Sleep is crucial for memory.","睡眠は記憶にとって極めて重要だ。","≒ vital"],
-["decline","動・名","減少する；〜を断る；減少","The birth rate continues to decline.","出生率は低下し続けている。",""],
-["deliberate","形","意図的な、慎重な","It was a deliberate attempt to mislead us.","それは私たちを欺こうとする意図的な試みだった。","副 deliberately わざと"],
-["derive","動","〜を引き出す、由来する(from)","Many English words derive from Latin.","多くの英単語はラテン語に由来する。",""],
-["distinguish","動","〜を区別する","Can you distinguish a crow from a raven?","カラスとワタリガラスを区別できますか。","distinguish A from B"],
-["elaborate","形・動","精巧な；詳しく述べる","Could you elaborate on that point?","その点について詳しく説明してもらえますか。",""],
-["eliminate","動","〜を取り除く","We must eliminate unnecessary costs.","不要な費用を削減しなければならない。",""],
-["emerge","動","現れる、明らかになる","New problems emerged during the test.","試験中に新たな問題が現れた。","名 emergence"],
-["enhance","動","〜を高める","Music can enhance concentration.","音楽は集中力を高めることがある。",""],
-["evaluate","動","〜を評価する","Teachers evaluate students in many ways.","教師は様々な方法で生徒を評価する。","名 evaluation"],
-["evident","形","明白な","Her talent was evident from an early age.","彼女の才能は幼い頃から明白だった。","≒ obvious"],
-["exaggerate","動","(〜を)誇張する","He tends to exaggerate his achievements.","彼は自分の業績を誇張しがちだ。","綴り：g が2つ"],
-["feasible","形","実行可能な","Is it feasible to finish by Friday?","金曜までに終えるのは実行可能だろうか。",""],
-["fundamental","形","根本的な、基本的な","Freedom of speech is a fundamental right.","言論の自由は基本的な権利だ。",""],
-["hypothesis","名","仮説","The data supported our hypothesis.","データは我々の仮説を支持した。","複 hypotheses"],
-["imply","動","〜を暗に意味する","His silence implied agreement.","彼の沈黙は同意を意味していた。","名 implication"],
-["indispensable","形","不可欠な","A dictionary is indispensable for learners.","学習者にとって辞書は不可欠だ。","≒ essential"],
-["inevitable","形","避けられない","Change is inevitable.","変化は避けられない。",""],
-["inherent","形","本来備わっている(in)","There are risks inherent in any investment.","どんな投資にも本質的なリスクがある。",""],
-["interpret","動","〜を解釈する、通訳する","People interpret the poem in different ways.","人々はその詩を様々に解釈する。",""],
-["maintain","動","〜を維持する、主張する","He maintains that he is innocent.","彼は無実だと主張している。","名 maintenance"],
-["neglect","動","〜を怠る、無視する","Don't neglect your health.","健康をおろそかにしてはいけない。",""],
-["obtain","動","〜を得る","You must obtain permission first.","まず許可を得なければならない。","≒ get"],
-["perceive","動","〜に気づく、〜とみなす","Dogs perceive sounds we cannot hear.","犬は人間に聞こえない音を感じ取る。","名 perception"],
-["phenomenon","名","現象","Rainbows are a natural phenomenon.","虹は自然現象だ。","複 phenomena"],
-["precise","形","正確な","Give me the precise time of arrival.","正確な到着時刻を教えてください。",""],
-["prevail","動","広まっている、勝る","This custom still prevails in rural areas.","この習慣は農村部で今も広く見られる。","形 prevalent"],
-["pursue","動","〜を追求する","She decided to pursue a career in medicine.","彼女は医療の道を進むことに決めた。","名 pursuit"],
-["reluctant","形","気が進まない","He was reluctant to admit his mistake.","彼は自分の誤りを認めたがらなかった。","be reluctant to do"],
-["substantial","形","かなりの、実質的な","There was a substantial increase in sales.","売上がかなり増加した。",""],
-["sufficient","形","十分な","We have sufficient evidence.","我々には十分な証拠がある。","⇔ insufficient"],
-["vague","形","漠然とした","He gave only a vague answer.","彼はあいまいな答えしかしなかった。","≒ ambiguous"]
-];
-
-/* ミニマルフレーズ・発音記号・注意マーク（*…* が見出し語と訳の対応部分）
-   mark: 発=発音注意 ア=アクセント注意 多=多義語 */
-const EXTRA={
-abandon:["əbǽndən","","*abandon* the plan","計画を*断念する*"],
-acquire:["əkwáɪər","","*acquire* a new language","新しい言語を*習得する*"],
-adequate:["ǽdɪkwət","ア","*adequate* food for everyone","全員分の*十分な*食料"],
-anticipate:["æntísəpèɪt","","*anticipate* a big crowd","大勢の人出を*予想する*"],
-apparent:["əpǽrənt","","for no *apparent* reason","*はっきりした*理由もなく"],
-approach:["əpróʊtʃ","多","a new *approach* to the problem","その問題への新しい*取り組み方*"],
-assume:["əsúːm","","*assume* that he is right","彼が正しいと*思い込む*"],
-attribute:["ətríbjuːt","ア","*attribute* success to luck","成功を運の*おかげと考える*"],
-cease:["siːs","発","*cease* to exist","存在しなく*なる*"],
-coherent:["koʊhíərənt","","a *coherent* argument","*首尾一貫した*主張"],
-comprehend:["kɑ̀mprɪhénd","","*comprehend* the meaning","意味を*理解する*"],
-conceive:["kənsíːv","","*conceive* of a world without war","戦争のない世界を*想像する*"],
-consequence:["kɑ́nsəkwèns","ア","the *consequences* of the decision","その決定の*結果*"],
-considerable:["kənsídərəbl","","a *considerable* amount of money","*かなりの*額のお金"],
-contradict:["kɑ̀ntrədíkt","","*contradict* the facts","事実と*矛盾する*"],
-convey:["kənvéɪ","","*convey* a message","メッセージを*伝える*"],
-crucial:["krúːʃəl","","play a *crucial* role","*極めて重要な*役割を果たす"],
-decline:["dɪkláɪn","多","*decline* an invitation","招待を*断る*"],
-deliberate:["dɪlíbərət","発","a *deliberate* lie","*意図的な*嘘"],
-derive:["dɪráɪv","","*derive* from Latin","ラテン語に*由来する*"],
-distinguish:["dɪstíŋɡwɪʃ","","*distinguish* right from wrong","善悪を*区別する*"],
-elaborate:["ɪlǽbərət","発","an *elaborate* design","*精巧な*デザイン"],
-eliminate:["ɪlímənèɪt","","*eliminate* waste","無駄を*取り除く*"],
-emerge:["ɪmə́ːrdʒ","","*emerge* from the dark","暗がりから*現れる*"],
-enhance:["ɪnhǽns","","*enhance* the quality of life","生活の質を*高める*"],
-evaluate:["ɪvǽljuèɪt","","*evaluate* the results","結果を*評価する*"],
-evident:["évɪdənt","ア","become *evident*","*明らか*になる"],
-exaggerate:["ɪɡzǽdʒərèɪt","発","*exaggerate* the danger","危険を*誇張する*"],
-feasible:["fíːzəbl","","a *feasible* plan","*実行可能な*計画"],
-fundamental:["fʌ̀ndəméntl","","a *fundamental* change","*根本的な*変化"],
-hypothesis:["haɪpɑ́θəsɪs","ア","test a *hypothesis*","*仮説*を検証する"],
-imply:["ɪmpláɪ","","*imply* a lack of interest","関心のなさを*暗に示す*"],
-indispensable:["ìndɪspénsəbl","","*indispensable* to our lives","私たちの生活に*不可欠な*"],
-inevitable:["ɪnévɪtəbl","ア","an *inevitable* result","*避けられない*結果"],
-inherent:["ɪnhíərənt","","risks *inherent* in the job","その仕事に*本来伴う*危険"],
-interpret:["ɪntə́ːrprɪt","ア","*interpret* the data","データを*解釈する*"],
-maintain:["meɪntéɪn","多","*maintain* world peace","世界平和を*維持する*"],
-neglect:["nɪɡlékt","","*neglect* one's duty","義務を*怠る*"],
-obtain:["əbtéɪn","","*obtain* information","情報を*得る*"],
-perceive:["pərsíːv","","*perceive* a change","変化に*気づく*"],
-phenomenon:["fɪnɑ́mənɑ̀n","ア","a natural *phenomenon*","自然*現象*"],
-precise:["prɪsáɪs","","*precise* instructions","*正確な*指示"],
-prevail:["prɪvéɪl","","the view that *prevails* today","今日*広まっている*見方"],
-pursue:["pərsúː","","*pursue* a dream","夢を*追い求める*"],
-reluctant:["rɪlʌ́ktənt","","be *reluctant* to admit it","それを*認めたがらない*"],
-substantial:["səbstǽnʃəl","","a *substantial* increase","*かなりの*増加"],
-sufficient:["səfíʃənt","","*sufficient* evidence","*十分な*証拠"],
-vague:["veɪɡ","発","a *vague* answer","*あいまいな*答え"]
-};
-const WORDS=RAW.map((r,i)=>{const x=EXTRA[r[0]]||["","",r[0],r[2]];return {id:i+1,w:r[0],pos:r[1],m:r[2],en:r[3],ja:r[4],rel:r[5],ipa:x[0],mark:x[1],ph:x[2],phj:x[3]};});
+/* ---------- 単語データ ----------
+ * 単語データはリポジトリには含めず、利用者が自分で読み込んだもの（この端末のブラウザ内に保存）を使う。
+ * 読み込み・変換は js/import.js。ここでは保存済みのデータを取り出すだけ。
+ */
+const DATA_KEY="akasheet-data-v1";
+let DATA=null;
+try{DATA=JSON.parse(localStorage.getItem(DATA_KEY)||"null");}catch(e){}
+const WORDS=(DATA&&Array.isArray(DATA.words))?DATA.words:[];
 const MAX_PER=5; // 1ページの最大語数（画面に収まる数だけ載せる）
 const STAGE=100; // 100語ごとに1ステージ
 const COLORS={yellow:"苦手",pink:"要注意",green:"例文",blue:"派生"};
-

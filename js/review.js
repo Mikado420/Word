@@ -11,7 +11,8 @@ const FORMS={
 const SCOPES={read:"読んだ単語",notes:"付箋",all:"すべて",range:"番号で指定"};
 const TARGETS={due:"復習が必要な語",all:"範囲をすべて"};
 const ORDERS={smart:"忘れかけ順",number:"番号順",random:"ランダム",weak:"苦手順"};
-S.cfg=Object.assign({forms:["pj"],scope:S.filter||"read",from:1,to:WORDS.length,colors:[],target:"due",order:"smart",exam:"",newMode:"auto",newN:15},S.cfg||{});
+const NO_MIN=WORDS.length?Math.min(...WORDS.map(w=>w.no||w.id)):1, NO_MAX=WORDS.length?Math.max(...WORDS.map(w=>w.no||w.id)):1;
+S.cfg=Object.assign({forms:["pj"],scope:S.filter||"read",from:NO_MIN,to:NO_MAX,colors:[],target:"due",order:"smart",exam:"",newMode:"auto",newN:15},S.cfg||{});
 
 const keyOf=(skill,id)=>skill==="rec"?id:"p"+id;
 const today=()=>{const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();};
@@ -22,7 +23,7 @@ function scopeWords(){
   return WORDS.filter(w=>{
     if(c.scope==="read") return S.read[w.id];
     if(c.scope==="notes"){const n=S.notes[w.id];return n&&(!c.colors.length||c.colors.includes(n.color));}
-    if(c.scope==="range") return w.id>=Math.min(c.from,c.to)&&w.id<=Math.max(c.from,c.to);
+    if(c.scope==="range"){const n=w.no||w.id;return n>=Math.min(c.from,c.to)&&n<=Math.max(c.from,c.to);}
     return true;
   });
 }
@@ -167,7 +168,7 @@ function openSettings(){
     scope:["範囲",()=>`
       <div class="sgroup">${Object.entries(SCOPES).map(([k,v])=>opt("scope",k,v,SCOPE_SUB[k],c.scope===k)).join("")}</div>
       ${c.scope==="notes"?`<p class="slabel">付箋の色（選ばなければすべて）</p><div class="colors">${Object.entries(COLORS).map(([k,v])=>`<button class="cchip c-${k}" data-color="${k}" aria-pressed="${c.colors.includes(k)}">${v}</button>`).join("")}</div>`:""}
-      ${c.scope==="range"?`<p class="slabel">番号</p><div class="srange">${stepper("from",c.from,1,WORDS.length)}<span>〜</span>${stepper("to",c.to,1,WORDS.length)}</div>`:""}`],
+      ${c.scope==="range"?`<p class="slabel">番号</p><div class="srange">${stepper("from",c.from,NO_MIN,NO_MAX)}<span>〜</span>${stepper("to",c.to,NO_MIN,NO_MAX)}</div>`:""}`],
     order:["順番",()=>`<div class="sgroup">${Object.entries(ORDERS).map(([k,v])=>opt("order",k,v,ORDER_SUB[k],c.order===k)).join("")}</div>`],
     exam:["試験日",()=>{const ex=examInfo(Date.now());return `
       <div class="sgroup spad"><input id="exam" class="sdate" type="date" value="${esc(c.exam)}"></div>
@@ -206,7 +207,7 @@ function openSettings(){
     document.querySelectorAll("[data-color]").forEach(b=>b.onclick=()=>{const k=b.dataset.color;set("colors",c.colors.includes(k)?c.colors.filter(x=>x!==k):c.colors.concat(k));});
     document.querySelectorAll("[data-order]").forEach(b=>b.onclick=()=>set("order",b.dataset.order));
     document.querySelectorAll("[data-newmode]").forEach(b=>b.onclick=()=>set("newMode",b.dataset.newmode));
-    const key={from:"from",to:"to",newn:"newN"},lim={from:[1,WORDS.length],to:[1,WORDS.length],newn:[0,200]};
+    const key={from:"from",to:"to",newn:"newN"},lim={from:[NO_MIN,NO_MAX],to:[NO_MIN,NO_MAX],newn:[0,200]};
     const put=(id,v)=>{const [lo,hi]=lim[id];v=Math.round(+v);c[key[id]]=Math.min(hi,Math.max(lo,isNaN(v)?lo:v));save();const e=$("#"+id);if(e)e.value=c[key[id]];};
     Object.keys(key).forEach(id=>{const e=$("#"+id);if(e)e.onchange=()=>put(id,e.value);});
     document.querySelectorAll("[data-step]").forEach(b=>b.onclick=()=>{const id=b.dataset.step;put(id,c[key[id]]+(+b.dataset.d));});
@@ -229,13 +230,13 @@ const blankWord=ph=>esc(ph).replace(/\*(.+?)\*/,(m,g)=>`<b class="blank">${g[0]}
 function front(it,w){
   if(it.form==="ej") return `<div class="w">${esc(w.w)}</div>`;
   if(it.form==="pj") return `<div class="w">${esc(w.w)}</div><div class="cph">${mk(w.ph)}</div>`;
-  if(it.form==="je") return `<div class="jm"><span class="pbox">${esc(w.pos)}</span>${esc(w.m)}</div><div class="hint1">${esc(w.w[0])} ${"＿ ".repeat(w.w.length-1)}<small>${w.w.length}文字</small></div>`;
+  if(it.form==="je") return `<div class="jm">${w.pos?`<span class="pbox">${esc(w.pos)}</span>`:""}${esc(w.m)}</div><div class="hint1">${esc(w.w[0])} ${"＿ ".repeat(w.w.length-1)}<small>${w.w.length}文字</small></div>`;
   return `<div class="cphj big">${mk(w.phj)}</div><div class="cph">${blankWord(w.ph)}</div>`;
 }
 function answer(it,w,n){
   const memo=n&&n.memo?`<div class="memo c-${n.color}">${esc(n.memo)}</div>`:"";
-  const ex=`<div class="ex"><span class="en">${hl(w.en,w.w)}</span><span class="ja">${esc(w.ja)}</span></div>`;
-  const ipa=`<div class="cipa">${markTag(w.mark)}<span class="ipa">[${esc(w.ipa)}]</span></div>`;
+  const ex=w.en?`<div class="ex"><span class="en">${hl(w.en,w.w)}</span><span class="ja">${esc(w.ja)}</span></div>`:"";
+  const ipa=w.ipa||w.mark?`<div class="cipa">${markTag(w.mark)}${w.ipa?`<span class="ipa">[${esc(w.ipa)}]</span>`:""}</div>`:"";
   if(FORMS[it.form].skill==="rec") return `<div class="ans">
     ${it.form==="ej"?`<div class="cph">${mk(w.ph)}</div>`:""}
     <div class="cphj">${mk(w.phj)}</div>
@@ -252,7 +253,7 @@ function renderCard(){
   <div class="rv">
     <div class="prog"><div class="track"><i style="width:${sess.total?sess.done/sess.total*100:0}%"></i></div><span>${sess.done} / ${sess.total}</span></div>
     <section class="card" id="card" aria-live="polite">
-      <span class="tagline">${FORMS[it.form].label} · ${isNew?"NEW":"REVIEW"} · No.${pad(it.id)}</span>
+      <span class="tagline">${FORMS[it.form].label} · ${isNew?"NEW":"REVIEW"} · No.${w.no||it.id}</span>
       ${n?`<span class="badge c-${n.color}"></span>`:""}
       ${front(it,w)}
       ${sess.shown?answer(it,w,n):`<div class="tap">${rec?"意味を思い浮かべてからタップ":"英語を思い浮かべてからタップ"}</div>`}

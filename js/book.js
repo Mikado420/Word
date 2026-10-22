@@ -3,6 +3,7 @@
  * 左列＝英語、右列＝日本語。赤シートは右列にかかり、赤字だけが消える
  */
 function renderBook(){
+  if(!WORDS.length) return renderImport();
   S.checks=S.checks||{};
   if(typeof S.pos!=="number") S.pos=(S.page||0)*5;
   // まず枠だけ描いて紙面の高さを測り、収まる語数でページ割りする
@@ -27,9 +28,9 @@ function phraseRow(w){return `
 function entryBlock(w){const n=S.notes[w.id],lv=level(w.id);return `
       <article class="ent" id="e${w.id}" data-peek>
         <div class="lc hwc">
-          <div class="hn"><span class="num">${w.id}</span><span class="lvdot l${lv}" title="${["未学習","学習中","定着"][lv]}"></span></div>
+          <div class="hn"><span class="num">${w.no||w.id}</span><span class="lvdot l${lv}" title="${["未学習","学習中","定着"][lv]}"></span></div>
           <div class="hword">${esc(w.w)}</div>
-          <div class="hipa">[${esc(w.ipa)}]</div>
+          ${w.ipa?`<div class="hipa">[${esc(w.ipa)}]</div>`:""}
           ${w.tags.length?`<div class="qtags">${w.tags.map(t=>`<span class="qt">${t}</span>`).join("")}</div>`:""}
           <button class="tagbtn" data-tag="${w.id}" aria-label="${esc(w.w)} に付箋">${tagIcon}</button>
         </div>
@@ -37,12 +38,12 @@ function entryBlock(w){const n=S.notes[w.id],lv=level(w.id);return `
           <div class="def">${fmtDef(w.d)}</div>
           ${w.l.map(fmtLine).join("")}
         </div>
-        ${w.q?`<div class="lc qc"><span class="qa">Q</span><span>${esc(w.q[0])}</span></div><div class="rc ac"><span class="qa">A</span><span class="hid">${esc(w.q[1])}</span></div>`:""}
+        ${w.q?`<div class="lc qc${w.q[1]?"":" qonly"}"><span class="qa">Q</span><span>${esc(w.q[0])}</span></div>${w.q[1]?`<div class="rc ac"><span class="qa">A</span><span class="hid">${esc(w.q[1])}</span></div>`:""}`:""}
         ${n&&n.memo?`<div class="memo c-${n.color}">${esc(n.memo)}</div>`:""}
         ${n?`<button class="sticky c-${n.color}" data-tag="${w.id}" aria-label="付箋を編集">${COLORS[n.color]}</button>`:""}
       </article>`;}
 function pageInner(stage,list,phrases,entries){
-  return `<div class="pghead"><h2>Phrases</h2><span>STAGE ${stage} · ${list.length?list[0].id+"–"+list[list.length-1].id:""}</span></div>
+  return `<div class="pghead"><h2>Phrases</h2><span>STAGE ${stage} · ${list.length?(list[0].no||list[0].id)+"–"+(list[list.length-1].no||list[list.length-1].id):""}</span></div>
       <div class="mp">${phrases}</div>
       <div class="ents">${entries}</div>
       <div class="pgfoot"><button class="pgnav" data-go="-1" aria-label="前のページ" ${S.page<=0?"disabled":""}>‹</button><span>${S.page+1} / ${PAGES||1}</span><button class="pgnav" data-go="1" aria-label="次のページ" ${S.page>=PAGES-1?"disabled":""}>›</button></div>`;
