@@ -43,10 +43,10 @@ function entryBlock(w){const n=S.notes[w.id],lv=level(w.id);return `
         ${n?`<button class="sticky c-${n.color}" data-tag="${w.id}" aria-label="付箋を編集">${COLORS[n.color]}</button>`:""}
       </article>`;}
 function pageInner(stage,list,phrases,entries){
-  return `<div class="pghead"><h2>Phrases</h2><span>STAGE ${stage} · ${list.length?(list[0].no||list[0].id)+"–"+(list[list.length-1].no||list[list.length-1].id):""}</span></div>
+  return `<div class="pghead"><h2>Phrases</h2><span>No. ${list.length?(list[0].no||list[0].id)+"–"+(list[list.length-1].no||list[list.length-1].id):""}</span></div>
       <div class="mp">${phrases}</div>
       <div class="ents">${entries}</div>
-      <div class="pgfoot"><button class="pgnav" data-go="-1" aria-label="前のページ" ${S.page<=0?"disabled":""}>‹</button><span>${S.page+1} / ${PAGES||1}</span><button class="pgnav" data-go="1" aria-label="次のページ" ${S.page>=PAGES-1?"disabled":""}>›</button></div>`;
+      <div class="pgfoot"><span class="pgst">Stage ${stage}</span><span class="pgno" title="全${PAGES||1}ページ">${S.page+1}</span><i class="pgdot"></i><button class="pgnav" data-go="-1" aria-label="前のページ" ${S.page<=0?"disabled":""}>‹</button><button class="pgnav" data-go="1" aria-label="次のページ" ${S.page>=PAGES-1?"disabled":""}>›</button></div>`;
 }
 function shell(p,total,inner){
   return `<section class="page" id="page">${inner}</section>`;

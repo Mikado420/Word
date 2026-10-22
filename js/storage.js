@@ -9,7 +9,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 function applyTheme(){
   const t=S.theme||"auto",el=document.documentElement;
   if(t==="auto") delete el.dataset.theme; else el.dataset.theme=t;
-  const c={light:"#E8F3FA",dark:"#000000"};
+  const c={light:"#F1EADB",dark:"#000000"};
   document.querySelectorAll('meta[name="theme-color"]').forEach(m=>{
     const own=/dark/.test(m.media)?"dark":"light";
     m.content=c[t==="auto"?own:t];
