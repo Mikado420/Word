@@ -3,7 +3,7 @@
  *
  * 読み取る書式
  *   1行目        タイトル（「動詞」などを含むと品詞として使う）
- *   No.番号 / 英語：… / 日本語：…       … フレーズ。【赤字：…】が赤字（見出し語・訳の強調）
+ *   No.番号 / 英語：… / 日本語：…       … フレーズ。【赤字：…】が赤字（見出し語・訳の強調。【意味】の中でも使える）
  *   番号. 見出し語（例：1. borrow）      … 見出し語ブロックの始まり
  *   【発音】[…]  【意味】  【名詞の意味】  【活用】  【例文】  【関連表現】  【関連語】
  *   【補足】  【問題】  【答え】  【訳】
@@ -25,7 +25,7 @@ function parseBook(text){
     if((m=s.match(/^(\d+)[.．]\s*([A-Za-z][A-Za-z' \-]*)$/))){cur={n:+m[1],w:m[2].trim(),f:{},items:[]};entries[cur.n]=cur;order.push(cur.n);field="_";phr=null;continue;}
     if(/^\d+[.．]\s/.test(s)){cur=null;continue;}          // 章の見出し（「3. 写真内の…」など）で区切る
     if(!cur) continue;
-    if((m=s.match(/^【([^】]+)】\s*(.*)$/))){field=m[1];cur.f[field]=cur.f[field]||[];if(m[2])cur.f[field].push(m[2]);continue;}
+    if((m=s.match(/^【(?!赤字)([^】]+)】\s*(.*)$/))){field=m[1];cur.f[field]=cur.f[field]||[];if(m[2])cur.f[field].push(m[2]);continue;}
     if(/^[◆◇⇔]/.test(s)){cur.items.push(s);field="items";continue;}
     if(field==="items"){cur.items[cur.items.length-1]+=" "+s;continue;}
     (cur.f[field]=cur.f[field]||[]).push(s);
@@ -64,9 +64,14 @@ function parseBook(text){
   order.sort((a,b)=>a-b).forEach((n,idx)=>{
     const e=entries[n],f=e.f,p=phrases[n];
     const mean=nonEmpty(f["意味"]),noun=nonEmpty(f["名詞の意味"]);
-    let d=mean.map(redify).join("　");
+    // 【意味】に【赤字：…】があればその指定どおりに赤字にする（無い語は括弧書き以外をすべて赤字）
+    const marked=mean.some(s=>/【赤字[：:]/.test(s));
+    const strip=s=>s.replace(/【赤字[：:]([^】]*)】/g,"$1");
+    let d=mean.map(s=>marked?red(s):redify(s)).join("　");
     if(noun.length) d+=(d?"　":"")+"[名]"+noun.join("；");
-    const m=(mean.length?mean:noun).map(s=>s.replace(/^[①-⑳]\s*/,"")).join("；")||e.w;
+    // 答えに使う意味：赤字指定があれば赤字を含む行の、最後の赤字までを使う
+    const mlines=marked?mean.filter(s=>/【赤字[：:]/.test(s)).map(s=>s.slice(0,s.lastIndexOf("】")+1)):(mean.length?mean:noun);
+    const m=mlines.map(s=>strip(s).replace(/^[①-⑳]\s*/,"").replace(/[；;、]$/,"")).join("；")||e.w;
     const l=e.items.map(item);
     nonEmpty(f["活用"]).forEach(s=>l.push(`★ 活用：${s}`));
     nonEmpty(f["補足"]).forEach(s=>l.push(`★ ${s}`));
@@ -134,8 +139,8 @@ explain は人を目的語にとらない。Explain the rules to me. が正し�
 `;
 
 /* 解析済みデータを保存して起動し直す（学習記録・付箋はリセット） */
-function applyBook(parsed){
-  try{localStorage.setItem(DATA_KEY,JSON.stringify({title:parsed.title,words:parsed.words,at:Date.now()}));}catch(e){return false;}
+function applyBook(parsed,src){
+  try{localStorage.setItem(DATA_KEY,JSON.stringify({title:parsed.title,words:parsed.words,src:src||"",at:Date.now()}));}catch(e){return false;}
   const nos=parsed.words.map(w=>w.no);
   Object.assign(S,{cards:{},notes:{},read:{},checks:{},pos:0,page:0,newLog:null,mode:"in"});
   S.cfg=Object.assign(S.cfg||{},{from:Math.min(...nos),to:Math.max(...nos),scope:"read"});
@@ -153,15 +158,30 @@ async function fetchBook(b){
 async function autoLoad(){
   if(!BOOKS.length) return renderImport();
   $("#view").innerHTML=`<div class="dash"><p class="hint" style="text-align:center">単語データを読み込んでいます…</p></div>`;
-  try{const p=parseBook(await fetchBook(BOOKS[0]));if(p.words.length&&applyBook(p))return;}catch(e){}
+  try{const p=parseBook(await fetchBook(BOOKS[0]));if(p.words.length&&applyBook(p,BOOKS[0].file))return;}catch(e){}
   renderImport();
+}
+
+/* 登録済みデータ（data/）が更新されていたら、学習記録を残したまま単語の中身だけ差し替える */
+async function syncBook(){
+  if(!DATA||!WORDS.length||!location.protocol.startsWith("http")) return;
+  for(const b of BOOKS){
+    if(DATA.src&&DATA.src!==b.file) continue;
+    let p;try{p=parseBook(await fetchBook(b));}catch(e){continue;}
+    if(!DATA.src&&p.title!==DATA.title) continue;   // 自分で読み込んだデータには触らない
+    if(!p.words.length) return;
+    if(DATA.src===b.file&&JSON.stringify(p.words)===JSON.stringify(WORDS)) return;
+    try{localStorage.setItem(DATA_KEY,JSON.stringify({title:p.title,words:p.words,src:b.file,at:Date.now()}));}catch(e){return;}
+    if(JSON.stringify(p.words)!==JSON.stringify(WORDS)&&typeof sess!=="undefined"&&!sess) location.reload();
+    return;
+  }
 }
 
 /* 読み込み画面 */
 function renderImport(back){
   RedSheet.unmount();
   const has=WORDS.length>0;
-  let parsed=null;
+  let parsed=null,src="";
   const draw=()=>{
     $("#view").innerHTML=`<div class="dash">
       <div class="vhead"><h1>単語データ</h1></div>
@@ -207,16 +227,16 @@ function renderImport(back){
       </section>
       ${has||back?`<button class="btn warn" id="cancel" style="align-self:center;width:auto">戻る</button>`:""}`}
     </div>`;
-    const go=t=>{parsed=parseBook(t);draw();};
+    const go=t=>{parsed=parseBook(t);src="";draw();};
     const fi=$("#file");if(fi)fi.onchange=()=>{const f=fi.files[0];if(!f)return;const r=new FileReader();r.onload=()=>go(String(r.result));r.readAsText(f,"utf-8");};
     const rd=$("#read");if(rd)rd.onclick=()=>{const t=$("#paste").value;if(t.trim())go(t);};
     const sm=$("#sample");if(sm)sm.onclick=()=>go(SAMPLE);
     const cc=$("#cancel");if(cc)cc.onclick=()=>render();
     const rr=$("#redo");if(rr)rr.onclick=()=>{parsed=null;draw();};
-    const ap=$("#apply");if(ap)ap.onclick=()=>{if(!applyBook(parsed))ap.textContent="保存できませんでした（ブラウザの保存領域を確認してください）";};
+    const ap=$("#apply");if(ap)ap.onclick=()=>{if(!applyBook(parsed,src))ap.textContent="保存できませんでした（ブラウザの保存領域を確認してください）";};
     document.querySelectorAll("[data-book]").forEach(b=>b.onclick=async()=>{
       const t=b.textContent;b.disabled=true;b.textContent="読み込み中…";
-      try{go(await fetchBook(BOOKS[+b.dataset.book]));}catch(e){b.disabled=false;b.textContent=t+"（読み込めませんでした）";}
+      try{const bk=BOOKS[+b.dataset.book];const txt=await fetchBook(bk);go(txt);src=bk.file;}catch(e){b.disabled=false;b.textContent=t+"（読み込めませんでした）";}
     });
   };
   draw();
